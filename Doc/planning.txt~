@@ -1,0 +1,31 @@
+1. Mise en place de l'environnement
+    - bdd Mongo sur MongoLab : party-more-user / jujutropbeau123
+    - installer ionic + sdk android
+    - node js pour le serveur api REST
+    
+2. Fichier bdd
+
+A) Code behind
+
+1. Partie Utilisateur
+    - création collection bdd
+    - get/post api REST
+    - get/post côté client
+
+2. Partie Contact
+    - creation collection bdd
+    - get/post api REST : getAllContact, getOneContact, addContact, removeContact
+    - get/post côté client
+    
+    
+B) User Interface
+
+1. Partie Utilisateur
+    - page de login + formulaire
+    - page de création d'account
+    - page d'édition profil
+
+2. Partie Contact
+    - browse contacts
+    - ajout contact
+    - supression contact

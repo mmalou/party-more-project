@@ -1,0 +1,34 @@
+Liste fonctionnalités fondamentales
+
+- Créer un utilisateur
+- Se connecter en tant d'utilisateur
+- Envoyer une demande de contact
+- Voir et accepter/refuser demande contact
+- Browse liste d’amis
+- Créer des groupes (ex grp soirée, grp école)
+- Suppression d’un contact
+
+- Création d’un événement (non propriétaire, il est juste créateur)
+- icone + couleur pour différencier les types d’événement (boite/bar/repas/suggestion/ect)
+- Suppression de l’événement si tout le monde refuse/quitte
+- Browse la liste des événement en cours (trier par date dans un premier temps, à voir pour le lieu)
+- Ouvrir un événement en cours ou passé
+- Possibilité d'éditer l’événement, tout le monde peut le faire mais il faut que ça soit accepter par le créateur (lieu/heure)
+- Les gens peuvent voter pour les différentes propositions (déroulante de gauche à droite avec les propositions + ajout de propositions) (trie des propositions par vote décroissant de gauche à droite)
+- Si le créateur part, n’importe qui peut récup
+- Chat de l’événement
+- Notification aux personnes concernés quand l’événement est crée
+- Notification aux personnes concernés quand l’heure approche
+- Notification de rappel si les gens ont pas trop parler/participer à l’événement
+
+Penser au fait que ça peut ne pas se limiter qu’au “soirée”.
+
+Idées :
+-  Cagnotte si le créateur s’occupe de tout prendre niveau matos
+-  GPS pour voir les types qui arrive à l’approche de l’événement
+- Photos pendant l’événement, qui crée un album à consulter, déclenché à partir du moment où l’événement à commencer
+- Possibilité de créer un événement public, et donc de browse les événement publics.
+- Covoiturage : le mec dit le trajet qu’il va faire, et les gens peuvent se greffer
+- Statut “Sam”
+- Invitation sur event en cours + promot
+
