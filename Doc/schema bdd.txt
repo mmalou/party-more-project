@@ -1,4 +1,4 @@
-user : mail, password
+user : mail, password, firstname, lastname
 
 user_contact: idUser, idContact, status
 

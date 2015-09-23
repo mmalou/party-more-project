@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var uriUtil = require('mongodb-uri');
-var mongodbUri = 'mongodb://party-more-user:jujutropbeau123@ds055862.mongolab.com:55862/party-more-db';
+var mongodbUri = 'mongodb://admin:jujutropbeau123@ds055862.mongolab.com:55862/party-more-db';
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
 var mongoose = require('mongoose');
 var db = mongoose.connection;
@@ -15,37 +15,37 @@ var schema = mongoose.Schema({ name : 'String', password : 'String'});
 var User = mongoose.model('user', schema);
 
 module.exports = {
-	add: function(p_name, p_password, callback) {
-		var newUser = new User({ name : p_name , password : p_password});
-		newQuestion.save(function (err,doc) {
+	add: function(p_mail, p_password, p_firstname, p_lastname callback) {
+		var newUser = new User({ mail : p_mail , password : p_password});
+		newUser.save(function (err,doc) {
 			if (err) 
 				return callback("error");
 			return callback(doc)
 		});
 	},
 	clean: function(callback) {
-		Question.remove(function(err) {
+		User.remove(function(err) {
 			if (err) 
 				return callback("error");
 			return callback("ok")
 		});
 	},
 	remove: function(id, callback) {
-		Question.remove({ _id: id }, function(err) {
+		User.remove({ _id: id }, function(err) {
 			if (err) 
 				return callback("error");
 			return callback("ok")
 		});
 	},
-	findByName: function(p_name, callback) {
-		Question.find({ name : p_name }, function (err, doc){
+	findByMail: function(p_mail, callback) {
+		User.find({ mail : p_mail }, function (err, doc){
 			if (err) 
 				return callback("error");
 			return callback(doc[0]);
 		});
 	},
 	findById: function(id, callback) {
-		Question.findById(id, function (err, doc){
+		User.findById(id, function (err, doc){
 			if (err) 
 				return callback("error");
 			return callback(doc);

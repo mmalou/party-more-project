@@ -19,7 +19,7 @@ app.get('/user/:iduser', function(req, res) {
 			res.send("Not Found");
 		}
 		else {
-		    var sortObject = {name: resultFind.name, password: resultFind.password};
+		    var sortObject = {name: resultFind.mail, password: resultFind.password};
 			res.statusCode = 200;
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send(sortObject);
@@ -35,7 +35,7 @@ app.get('/user/:nameuser', function(req, res){
 			res.send("Not Found");
 		}
 		else{
-		    var sortObject = {name: resultFind.name, password: resultFind.password};
+		    var sortObject = {mail: resultFind.mail, password: resultFind.password};
 			res.statusCode = 200;
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send(sortObject);
@@ -46,7 +46,7 @@ app.get('/user/:nameuser', function(req, res){
 app.post('/user/', function(req, res) {
 	var name = req.body.name;
 	var password = req.body.password;
-	mongomodel.add(name, password, function(resultAdd){
+	mongomodel.add(mail, password, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");

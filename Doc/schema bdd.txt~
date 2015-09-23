@@ -2,7 +2,7 @@ user : mail, password
 
 user_contact: idUser, idContact, status
 
-event : name, category, date, startHour, description, location
+event : name, category, date, startHour, description, location, idUser
 
 event_user : idEvent,  idUser, status
 
