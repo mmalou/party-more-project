@@ -15,7 +15,7 @@ var schema = mongoose.Schema({ name : 'String', password : 'String'});
 var User = mongoose.model('user', schema);
 
 module.exports = {
-	add: function(p_mail, p_password, p_firstname, p_lastname callback) {
+	add: function(p_mail, p_password, p_firstname, p_lastname, callback) {
 		var newUser = new User({ mail : p_mail , password : p_password});
 		newUser.save(function (err,doc) {
 			if (err) 
