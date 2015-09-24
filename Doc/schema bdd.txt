@@ -1,8 +1,8 @@
 user : mail, password, firstname, lastname
 
-user_contact: idUser, idContact, status
+user_contact: mailUser, mailContact, status
 
-event : name, category, date, startHour, description, location, idUser
+event : name, category, dateStart, description, location, idUser
 
 event_user : idEvent,  idUser, status
 
