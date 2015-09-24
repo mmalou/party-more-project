@@ -8,7 +8,7 @@ var User = mongoose.model('user', schema_user, 'user');
 
 module.exports = {
 	add: function(p_mail, p_password, p_firstname, p_lastname, callback) {
-		var newUser = new User({ mail : p_mail , password : p_password});
+		var newUser = new User({ mail : p_mail , password : p_password, firstname : p_firstname, lastname : p_lastname});
 		newUser.save(function (err,doc) {
 			if (err) 
 				return callback("error");
@@ -33,7 +33,7 @@ module.exports = {
 		User.find({ mail : p_mail }, function (err, doc){
 			if (err) 
 				return callback("error");
-			return callback(doc[0]);
+			return callback(doc);
 		});
 	},
 	findById: function(id, callback) {
