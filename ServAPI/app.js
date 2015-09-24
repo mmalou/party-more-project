@@ -20,13 +20,10 @@ db.once('open', function (callback) {
 
 var usermodel = require(__dirname +"/models/usermodel.js");
 var usercontactmodel = require(__dirname +"/models/usercontactmodel.js");
-<<<<<<< Updated upstream
 var eventmodel = require(__dirname +"/models/eventmodel.js");
 var eventlocationsuggestionmodel = require(__dirname +"/models/eventlocationsuggestionmodel.js");
-=======
 var eventusermodel = require(__dirname +"/models/eventusermodel.js");
 var eventstuffmodel = require(__dirname +"/models/eventstuffmodel.js");
->>>>>>> Stashed changes
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -63,7 +60,6 @@ app.get('/user/mail/:mailuser', function(req, res){
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send("Not Found");
 		}
-<<<<<<< Updated upstream
 		else {
 			var sortArray = [];
 			for (var i in resultFind){
@@ -73,12 +69,6 @@ app.get('/user/mail/:mailuser', function(req, res){
 			res.statusCode = 200;
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send(sortArray);
-=======
-		else{
-			res.statusCode = 200;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(resultFind);
->>>>>>> Stashed changes
 		} 
     });
 });
