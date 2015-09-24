@@ -59,5 +59,35 @@ angular.module('starter.controllers', [])
   ];
 })
 
+.controller('ContactsCtrl', function($scope, $http) {
+	/*$http.get("http://www.localhost:8081/user/project.partymore@gmail.com").success(function(data){
+		console.debug(data);
+	});*/
+	$scope.contacts = [
+		{ mailContact: 'maximemeri@gmail.com', idContact: 1 },
+		{ mailContact: 'rabinovitchlouis@gmail.com', idContact: 2 }
+	];
+	
+	$scope.addContact = function() {
+		console.log('Add contact', $scope.loginData);
+		
+		/*$http.get("http://www.localhost:8081/user/project.partymore@gmail.com").success(function(data){
+			console.log('get ok', '');
+		});*/
+		/*.error(function(data){
+			console.log('get ko', '');
+		});*/
+	    // Simulate a login delay. Remove this and replace with your login
+	    // code if using a login system
+	    //$timeout(function() {
+	    //  $scope.closeLogin();
+	    //}, 1000);
+	};
+})
+
+.controller('ContactCtrl', function($scope, $http) {
+	$scope.contact = 'test';
+})
+
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });
