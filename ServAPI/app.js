@@ -58,7 +58,7 @@ app.get('/user/:mailuser', function(req, res){
 app.post('/user/', function(req, res) {
 	var mail = req.body.mail;
 	var password = req.body.password;
-	usermodel.add(mail, password, function(resultAdd){
+	usermodel.add(mail, password, '', '', function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
