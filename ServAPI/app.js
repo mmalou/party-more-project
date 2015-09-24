@@ -95,7 +95,7 @@ app.get('/usercontact/:mailuser', function(req, res){
 app.post('/usercontact/', function(req, res) {
 	var mailUser = req.body.mailUser;
 	var mailContact = req.body.mailContact;
-	usermodel.add(mailUser, mailContact, function(resultAdd){
+	usercontactmodel.add(mailUser, mailContact, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
