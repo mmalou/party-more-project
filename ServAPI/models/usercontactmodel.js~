@@ -4,7 +4,7 @@ var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
     
 var schema_user_contact = Schema({ mailUser : String, mailContact : String, status : String});
-var UserContact = mongoose.model('usercontact', schema_user_contact, 'usercontact');
+var UserContact = mongoose.model('user_contact', schema_user_contact, 'user_contact');
 
 module.exports = {
 	add: function(p_mailUser, p_mailContact, callback) {
@@ -35,7 +35,7 @@ module.exports = {
 		    console.log("erreur : " + err);
 			if (err) 
 				return callback("error");
-			return callback(doc[0]);
+			return callback(doc);
 		});
 	}
 };

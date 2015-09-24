@@ -1,14 +1,4 @@
 var mongoose = require('mongoose');
-var uriUtil = require('mongodb-uri');
-var mongodbUri = 'mongodb://admin:jujutropbeau123@ds055862.mongolab.com:55862/party-more-db';
-var mongooseUri = uriUtil.formatMongoose(mongodbUri);
-var db = mongoose.connection;
-mongoose.connect(mongooseUri);
-
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function (callback) {
-	console.log("Connection ok");
-});
 
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;

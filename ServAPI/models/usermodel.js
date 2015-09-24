@@ -31,7 +31,6 @@ module.exports = {
 	},
 	findByMail: function(p_mail, callback) {
 		User.find({ mail : p_mail }, function (err, doc){
-		    console.log("erreur : " + err);
 			if (err) 
 				return callback("error");
 			return callback(doc[0]);

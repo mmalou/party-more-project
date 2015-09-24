@@ -88,10 +88,9 @@ app.get('/usercontact/:mailuser', function(req, res){
 		}
 		else{
 		    console.log(resultFind);
-		    var sortObject = {};
 			res.statusCode = 200;
 			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(sortObject);
+			res.send(resultFind);
 		} 
     });
 });
