@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
     
-var schema_user_contact = Schema({ mailUser : String, mailContact : String, status : String});
+var schema_user_contact = Schema({ mailUser : String, mailContact : String, status : String}, { versionKey: false });
 var UserContact = mongoose.model('user_contact', schema_user_contact, 'user_contact');
 
 module.exports = {
@@ -14,13 +14,6 @@ module.exports = {
 			if (err) 
 				return callback("error");
 			return callback(doc)
-		});
-	},
-	clean: function(callback) {
-		UserContact.remove(function(err) {
-			if (err) 
-				return callback("error");
-			return callback("ok")
 		});
 	},
 	remove: function(id, callback) {
