@@ -30,7 +30,7 @@ module.exports = {
 			return callback("ok")
 		});
 	},
-	findContactByMail: function(p_mail, callback) {
+	findAllContactsByMail: function(p_mail, callback) {
 		UserContact.find({ mailUser : p_mail }, function (err, doc){
 			if (err) 
 				return callback("error");

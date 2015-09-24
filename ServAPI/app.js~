@@ -23,8 +23,6 @@ var usercontactmodel = require(__dirname +"/models/usercontactmodel.js");
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-var path = "http://localhost:8081/";
-
 /****** API USER ******/
 
 app.get('/user/:mailuser', function(req, res){
@@ -61,8 +59,8 @@ app.post('/user/', function(req, res) {
 	});
 });
 
-app.delete('/user/', function(req, res) {
-	usermodel.clean(function(resultFind){
+app.delete('/user/:iduser', function(req, res) {
+	usermodel.remove(req.params.iduser, function(resultFind){
 		if(resultFind == "error" || resultFind == null){
 			res.statusCode = 400;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -80,20 +78,52 @@ app.delete('/user/', function(req, res) {
 /****** API USER CONTACT ******/
 
 app.get('/usercontact/:mailuser', function(req, res){
-    usercontactmodel.findContactByMail(req.params.mailuser, function(resultFind){
+    usercontactmodel.findAllContactsByMail(req.params.mailuser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send("Not Found");
 		}
 		else{
-		    console.log(resultFind);
 			res.statusCode = 200;
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send(resultFind);
 		} 
     });
 });
+
+app.post('/usercontact/', function(req, res) {
+	var mailUser = req.body.mailUser;
+	var mailContact = req.body.mailContact;
+	usermodel.add(mailUser, mailContact, function(resultAdd){
+		if (resultAdd == "error") {
+			res.statusCode = 500;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+		else {
+			res.statusCode = 201;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+	});
+});
+
+app.delete('/usercontact/:idusercontact', function(req, res) {
+	usercontactmodel.remove(req.params.idusercontact, function(resultFind){
+		if(resultFind == "error" || resultFind == null){
+			res.statusCode = 400;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+	});
+});
+
 
 app.use(function(req, res) {
 	res.statusCode = 400;

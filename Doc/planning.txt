@@ -15,7 +15,7 @@ A) Code behind
 2. Partie Contact
     - creation collection bdd
     - côté API : listener sur le champs status de user_contact -> suppression du doc si status = refus
-    - get/post api REST : getAllContact, getOneContact, addContact, removeContact
+    - get/post api REST : getAllContact, addContact, removeContact
     - get/post côté client
 
 3. Partie Evenement
