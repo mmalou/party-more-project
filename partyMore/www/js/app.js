@@ -38,6 +38,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       'menuContent': {
         templateUrl: 'templates/search.html'
       }
+    }	
+  })
+  
+    .state('app.inscription', {
+    url: '/inscription',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/inscription.html',
+		controller: 'inscription'
+      }
     }
   })
 
@@ -48,7 +58,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
           templateUrl: 'templates/browse.html'
         }
       }
-    })
+    }) 
     .state('app.playlists', {
       url: '/playlists',
       views: {

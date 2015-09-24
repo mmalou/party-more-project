@@ -32,7 +32,7 @@ angular.module('starter.controllers', [])
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+    console.log('Doing loginn', $scope.loginData);
 	
 	$http.get("http://www.localhost:8081/user/project.partymore@gmail.com").success(function(data){
 		console.log('get ok', '');
@@ -40,11 +40,6 @@ angular.module('starter.controllers', [])
 	/*.error(function(data){
 		console.log('get ko', '');
 	});*/
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    //$timeout(function() {
-    //  $scope.closeLogin();
-    //}, 1000);
   };
 })
 
@@ -60,4 +55,28 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+})
+
+
+.controller('inscription', function($scope, $ionicModal, $http) {
+  console.log('controller inscription');
+  $scope.inscriptionData = {};
+
+  
+  $scope.doInscription = function() {
+    console.log('Doing inscription', $scope.inscriptionData);
+	console.log('mail', $scope.inscriptionData.mail);
+	console.log('mail', $scope.inscriptionData.password);
+	
+	var user = { mail: $scope.inscriptionData.mail , password: $scope.inscriptionData.password};
+	console.log('bonjour', user);
+	$http.post("http://www.localhost:8081/user/", user).success(function(){
+		console.log('get ok', '');
+		// Inscription réussite
+	})
+	.error(function(){
+		console.log('get ko', '');
+		// Erreur inscription
+	});
+  };
+})
