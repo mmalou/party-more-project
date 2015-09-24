@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
     
-var schema_event = Schema({ id : ObjectId, name : String, category : String, dateStart: String, description: String, location: String, mailUser: String});
+var schema_event = Schema({ id : ObjectId, name : String, category : String, dateStart: String, description: String, location: String, mailUser: String}, { versionKey: false });
 var Event = mongoose.model('event', schema_event, 'event');
 
 module.exports = {
@@ -13,13 +13,6 @@ module.exports = {
 			if (err) 
 				return callback("error");
 			return callback(doc)
-		});
-	},
-	clean: function(callback) {
-		Event.remove(function(err) {
-			if (err) 
-				return callback("error");
-			return callback("ok")
 		});
 	},
 	remove: function(id, callback) {

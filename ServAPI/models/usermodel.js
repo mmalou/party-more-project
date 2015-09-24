@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
     
-var schema_user = Schema({ id : ObjectId, mail : String, password : String, firstname: String, lastname: String});
+var schema_user = Schema({ id : ObjectId, mail : String, password : String, firstname: String, lastname: String}, { versionKey: false });
 var User = mongoose.model('user', schema_user, 'user');
 
 module.exports = {
@@ -13,13 +13,6 @@ module.exports = {
 			if (err) 
 				return callback("error");
 			return callback(doc)
-		});
-	},
-	clean: function(callback) {
-		User.remove(function(err) {
-			if (err) 
-				return callback("error");
-			return callback("ok")
 		});
 	},
 	remove: function(id, callback) {
