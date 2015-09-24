@@ -3,6 +3,7 @@ var url = require('url')
 var querystring = require('querystring')
 var express = require('express')
 var bodyParser = require('body-parser')
+var cors = require('cors')
 var app = express();
 
 var mongoose = require('mongoose');
@@ -22,6 +23,13 @@ var usercontactmodel = require(__dirname +"/models/usercontactmodel.js");
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(cors());
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+    next();
+});
 
 /****** API USER ******/
 
