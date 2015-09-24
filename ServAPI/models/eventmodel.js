@@ -35,5 +35,12 @@ module.exports = {
 				return callback("error");
 			return callback(doc);
 		});
+	},
+	findById: function(id, callback) {
+		Event.findById(id, function (err, doc){
+			if (err) 
+				return callback("error");
+			return callback(doc);
+		});
 	}
 };

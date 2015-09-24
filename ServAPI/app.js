@@ -41,12 +41,15 @@ app.get('/user/:mailuser', function(req, res){
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send("Not Found");
 		}
-		else{
-		    var sortObject = {mail: resultFind.mail, password: resultFind.password,
-		                    firstname: resultFind.firstname, lastname: resultFind.lastname};
+		else {
+			var sortArray = [];
+			for (var i in resultFind){
+				sortArray.push({mail: resultFind[i].mail, password: resultFind[i].password,
+		                    firstname: resultFind[i].firstname, lastname: resultFind[i].lastname});
+			}
 			res.statusCode = 200;
 			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(sortObject);
+			res.send(sortArray);
 		} 
     });
 });
@@ -136,14 +139,14 @@ app.delete('/usercontact/:idusercontact', function(req, res) {
 /****** API EVENT ******/
 
 app.get('/event/:idevent', function(req, res){
-    eventmodel.findByMail(req.params.idevent, function(resultFind){
+    eventmodel.findById(req.params.idevent, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send("Not Found");
 		}
 		else{
-		    var sortObject = {name: resultFind.name, category: resultFind.category,
+			var sortObject = {name: resultFind.name, category: resultFind.category,
 		                    dateStart: resultFind.dateStart, description: resultFind.description, location: resultFind.location, mailUser: resultFind.mailUser};
 			res.statusCode = 200;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -180,7 +183,7 @@ app.delete('/event/:idevent', function(req, res) {
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send(resultFind);
 		}
-		else{
+		else {
 			res.statusCode = 200;
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send(resultFind);
@@ -188,6 +191,7 @@ app.delete('/event/:idevent', function(req, res) {
 	});
 });
 
+/****** API REPONSE DE BASE ******/
 
 app.use(function(req, res) {
 	res.statusCode = 400;
