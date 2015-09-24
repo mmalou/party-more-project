@@ -8,11 +8,14 @@ mongoose.connect(mongooseUri);
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
-	//console.log("Connection ok");
+	console.log("Connection ok");
 });
 
-var schema = mongoose.Schema({ name : 'String', password : 'String'});
-var User = mongoose.model('user', schema);
+var Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
+    
+var schema_user = Schema({ id : ObjectId, mail : String, password : String});
+var User = mongoose.model('user', schema_user, 'user');
 
 module.exports = {
 	add: function(p_mail, p_password, p_firstname, p_lastname, callback) {
@@ -39,6 +42,7 @@ module.exports = {
 	},
 	findByMail: function(p_mail, callback) {
 		User.find({ mail : p_mail }, function (err, doc){
+		    console.log("erreur : " + err);
 			if (err) 
 				return callback("error");
 			return callback(doc[0]);

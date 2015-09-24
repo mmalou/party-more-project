@@ -11,24 +11,8 @@ app.use(bodyParser.json())
 
 var path = "http://localhost:8081/";
 
-app.get('/user/:iduser', function(req, res) {
-	mongomodel.findById(req.params.iduser, function(resultFind){
-		if(resultFind == "error" || resultFind == null){
-			res.statusCode = 404;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send("Not Found");
-		}
-		else {
-		    var sortObject = {name: resultFind.mail, password: resultFind.password};
-			res.statusCode = 200;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(sortObject);
-		}
-	});
-});
-
-app.get('/user/:nameuser', function(req, res){
-    mongomodel.findByName(req.params.nameuser, function(resultFind){
+app.get('/user/:mailuser', function(req, res){
+    mongomodel.findByMail(req.params.mailuser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -44,7 +28,7 @@ app.get('/user/:nameuser', function(req, res){
 });
 
 app.post('/user/', function(req, res) {
-	var name = req.body.name;
+	var mail = req.body.mail;
 	var password = req.body.password;
 	mongomodel.add(mail, password, function(resultAdd){
 		if (resultAdd == "error") {
