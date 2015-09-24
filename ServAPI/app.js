@@ -20,6 +20,7 @@ db.once('open', function (callback) {
 
 var usermodel = require(__dirname +"/models/usermodel.js");
 var usercontactmodel = require(__dirname +"/models/usercontactmodel.js");
+var eventmodel = require(__dirname +"/models/eventmodel.js");
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -119,6 +120,61 @@ app.post('/usercontact/', function(req, res) {
 
 app.delete('/usercontact/:idusercontact', function(req, res) {
 	usercontactmodel.remove(req.params.idusercontact, function(resultFind){
+		if(resultFind == "error" || resultFind == null){
+			res.statusCode = 400;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+	});
+});
+
+/****** API EVENT ******/
+
+app.get('/event/:idevent', function(req, res){
+    eventmodel.findByMail(req.params.idevent, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+		    var sortObject = {name: resultFind.name, category: resultFind.category,
+		                    dateStart: resultFind.dateStart, description: resultFind.description, location: resultFind.location, mailUser: resultFind.mailUser};
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(sortObject);
+		} 
+    });
+});
+
+app.post('/event/', function(req, res) {
+	var name = req.body.name;
+	var category = req.body.category;
+	var dateStart = req.body.dateStart;
+	var description = req.body.description;
+	var location = req.body.location;
+	var mailUser = req.body.mailUser;
+	eventmodel.add(name, category, dateStart, description, location, mailUser, function(resultAdd){
+		if (resultAdd == "error") {
+			res.statusCode = 500;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+		else {
+			res.statusCode = 201;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+	});
+});
+
+app.delete('/event/:idevent', function(req, res) {
+	eventmodel.remove(req.params.idevent, function(resultFind){
 		if(resultFind == "error" || resultFind == null){
 			res.statusCode = 400;
 			res.header("Cache-Control", "public, max-age=1209600");
