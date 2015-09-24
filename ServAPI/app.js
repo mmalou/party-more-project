@@ -21,6 +21,7 @@ db.once('open', function (callback) {
 var usermodel = require(__dirname +"/models/usermodel.js");
 var usercontactmodel = require(__dirname +"/models/usercontactmodel.js");
 var eventmodel = require(__dirname +"/models/eventmodel.js");
+var eventlocationsuggestionmodel = require(__dirname +"/models/eventlocationsuggestionmodel.js");
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -178,6 +179,77 @@ app.post('/event/', function(req, res) {
 
 app.delete('/event/:idevent', function(req, res) {
 	eventmodel.remove(req.params.idevent, function(resultFind){
+		if(resultFind == "error" || resultFind == null){
+			res.statusCode = 400;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+		else {
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+	});
+});
+
+/****** API EVENT LOCATION SUGGESTION ******/
+
+app.get('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res){
+    eventlocationsuggestionmodel.findById(req.params.ideventlocationsuggestion, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		} 
+    });
+});
+
+app.get('/eventlocationsuggestion/event/:idevent', function(req, res){
+    eventlocationsuggestionmodel.findByEventId(req.params.idevent, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			var sortArray = [];
+			for (var i in resultFind){
+				sortArray.push({category: resultFind[i].category, location: resultFind[i].location,
+		                    voteCount: resultFind[i].voteCount});
+			}
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(sortArray);
+		} 
+    });
+});
+
+app.post('/eventlocationsuggestion/', function(req, res) {
+	var idEvent = req.body.idEvent;
+	var category = req.body.category;
+	var location = req.body.location;
+	var voteCount = req.body.voteCount;
+	eventlocationsuggestionmodel.add(idEvent, category, location, voteCount, function(resultAdd){
+		if (resultAdd == "error") {
+			res.statusCode = 500;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+		else {
+			res.statusCode = 201;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+	});
+});
+
+app.delete('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res) {
+	eventlocationsuggestionmodel.remove(req.params.ideventlocationsuggestion, function(resultFind){
 		if(resultFind == "error" || resultFind == null){
 			res.statusCode = 400;
 			res.header("Cache-Control", "public, max-age=1209600");

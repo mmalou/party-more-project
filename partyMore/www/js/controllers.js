@@ -32,7 +32,7 @@ angular.module('starter.controllers', [])
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing loginn', $scope.loginData);
+    console.log('Doing login', $scope.loginData);
 	
 	$http.get("http://www.localhost:8081/user/project.partymore@gmail.com").success(function(data){
 		console.log('get ok', '');
