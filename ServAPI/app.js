@@ -38,6 +38,7 @@ app.use(function(req, res, next) {
 
 /****** API USER ******/
 
+//retourne l'utilisateur dont l'id est passé en paramètre
 app.get('/user/:iduser', function(req, res){
     usermodel.findById(req.params.iduser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -53,7 +54,7 @@ app.get('/user/:iduser', function(req, res){
     });
 });
 
-
+//retourne l'utilisateur d'après son mail
 app.get('/user/mail/:mailuser', function(req, res){
     usermodel.findByMail(req.params.mailuser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -109,6 +110,7 @@ app.delete('/user/:iduser', function(req, res) {
 
 /****** API USER CONTACT ******/
 
+//retourne un contact d'après son mail
 app.get('/usercontact/:mailuser', function(req, res){
     usercontactmodel.findAllContactsByMail(req.params.mailuser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -158,6 +160,7 @@ app.delete('/usercontact/:idusercontact', function(req, res) {
 
 /****** API EVENT ******/
 
+//retourne un event d'après son id
 app.get('/event/:idevent', function(req, res){
     eventmodel.findById(req.params.idevent, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -213,6 +216,7 @@ app.delete('/event/:idevent', function(req, res) {
 
 /****** API EVENT LOCATION SUGGESTION ******/
 
+//retourne une suggestion de localisation d'après son id
 app.get('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res){
     eventlocationsuggestionmodel.findById(req.params.ideventlocationsuggestion, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -228,6 +232,7 @@ app.get('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res
     });
 });
 
+//retourne toutes les suggestions de l'event dont l'id est passé en paramètre
 app.get('/eventlocationsuggestion/event/:idevent', function(req, res){
     eventlocationsuggestionmodel.findByEventId(req.params.idevent, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -284,6 +289,7 @@ app.delete('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, 
 
 /****** API EVENT LOCATION SUGGESTION VOTE ******/
 
+//retourne le vote dont l'id est passé en paramètre
 app.get('/eventlocationsuggestionvote/:ideventlocationsuggestionvote', function(req, res){
     eventlocationsuggestionvotemodel.findById(req.params.ideventlocationsuggestionvote, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -299,6 +305,7 @@ app.get('/eventlocationsuggestionvote/:ideventlocationsuggestionvote', function(
     });
 });
 
+//retourne tous les votes associés à la suggestion passé en paramètre
 app.get('/eventlocationsuggestionvote/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res){
     eventlocationsuggestionvotemodel.findByEventLocationSuggestionId(req.params.ideventlocationsuggestion, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -353,6 +360,7 @@ app.delete('/eventlocationsuggestionvote/:ideventlocationsuggestionvote', functi
 
 /****** API EVENT USER ******/
 
+//retourne les events associés à l'user dont l'id est passé en paramètre
 app.get('/eventuser/:idUser', function(req, res){
     eventusermodel.findByUser(req.params.idUser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -418,6 +426,7 @@ app.delete('/eventuser/:ideventuser', function(req, res) {
 
 /****** API EVENT STUFF ******/
 
+//retourne l'event stuff d'après son id
 app.get('/eventstuff/:ideventstuff', function(req, res){
     eventstuffmodel.findById(req.params.ideventstuff, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -433,6 +442,7 @@ app.get('/eventstuff/:ideventstuff', function(req, res){
     });
 });
 
+//retourne les event stuff d'après l'id de l'event associé
 app.get('/eventstuff/event/:idevent', function(req, res){
     eventstuffmodel.findByEvent(req.params.idevent, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -504,5 +514,3 @@ app.use(function(req, res) {
 });
 
 module.exports = app;
-
-//server.close();
