@@ -10,6 +10,6 @@ event_location_suggestion : idEvent, category, location, voteCount
 
 event_location_suggestion_vote : idEventLocationSuggestion, idUser
 
-event_stuff : idEvent, content
+event_stuff : idEvent, idUser, content
 
 event_chat : idEvent, idUser, message, date

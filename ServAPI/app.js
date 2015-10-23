@@ -16,6 +16,9 @@ var usermodel = require(__dirname +"/models/usermodel.js");
 var usercontactmodel = require(__dirname +"/models/usercontactmodel.js");
 var eventmodel = require(__dirname +"/models/eventmodel.js");
 var eventlocationsuggestionmodel = require(__dirname +"/models/eventlocationsuggestionmodel.js");
+var eventlocationsuggestionvotemodel = require(__dirname +"/models/eventlocationsuggestionvotemodel.js");
+var eventusermodel = require(__dirname +"/models/eventusermodel.js");
+var eventstuffmodel = require(__dirname +"/models/eventstuffmodel.js");
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -29,7 +32,24 @@ app.use(function(req, res, next) {
 
 /****** API USER ******/
 
-app.get('/user/:mailuser', function(req, res){
+//retourne l'utilisateur dont l'id est passé en paramètre
+app.get('/user/:iduser', function(req, res){
+    usermodel.findById(req.params.iduser, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		} 
+    });
+});
+
+//retourne l'utilisateur d'après son mail
+app.get('/user/mail/:mailuser', function(req, res){
     usermodel.findByMail(req.params.mailuser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
@@ -84,6 +104,7 @@ app.delete('/user/:iduser', function(req, res) {
 
 /****** API USER CONTACT ******/
 
+//retourne un contact d'après son mail
 app.get('/usercontact/:mailuser', function(req, res){
     usercontactmodel.findAllContactsByMail(req.params.mailuser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -102,7 +123,7 @@ app.get('/usercontact/:mailuser', function(req, res){
 app.post('/usercontact/', function(req, res) {
 	var mailUser = req.body.mailUser;
 	var mailContact = req.body.mailContact;
-	usercontactmodel.add(mailUser, mailContact, function(resultAdd){
+	usermodel.add(mailUser, mailContact, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -133,6 +154,7 @@ app.delete('/usercontact/:idusercontact', function(req, res) {
 
 /****** API EVENT ******/
 
+//retourne un event d'après son id
 app.get('/event/:idevent', function(req, res){
     eventmodel.findById(req.params.idevent, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -188,6 +210,7 @@ app.delete('/event/:idevent', function(req, res) {
 
 /****** API EVENT LOCATION SUGGESTION ******/
 
+//retourne une suggestion de localisation d'après son id
 app.get('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res){
     eventlocationsuggestionmodel.findById(req.params.ideventlocationsuggestion, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -203,6 +226,7 @@ app.get('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res
     });
 });
 
+//retourne toutes les suggestions de l'event dont l'id est passé en paramètre
 app.get('/eventlocationsuggestion/event/:idevent', function(req, res){
     eventlocationsuggestionmodel.findByEventId(req.params.idevent, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -257,7 +281,225 @@ app.delete('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, 
 	});
 });
 
-/****** API REPONSE DE BASE ******/
+/****** API EVENT LOCATION SUGGESTION VOTE ******/
+
+//retourne le vote dont l'id est passé en paramètre
+app.get('/eventlocationsuggestionvote/:ideventlocationsuggestionvote', function(req, res){
+    eventlocationsuggestionvotemodel.findById(req.params.ideventlocationsuggestionvote, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		} 
+    });
+});
+
+//retourne tous les votes associés à la suggestion passé en paramètre
+app.get('/eventlocationsuggestionvote/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res){
+    eventlocationsuggestionvotemodel.findByEventLocationSuggestionId(req.params.ideventlocationsuggestion, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			var sortArray = [];
+			for (var i in resultFind){
+				sortArray.push({idEventLocationSuggestion: resultFind[i].idEventLocationSuggestion, idUser: resultFind[i].idUser});
+			}
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(sortArray);
+		} 
+    });
+});
+
+app.post('/eventlocationsuggestionvote/', function(req, res) {
+	var idEventLocationSuggestion = req.body.idEventLocationSuggestion;
+	var idUser = req.body.idUser;
+	eventlocationsuggestionvotemodel.add(idEventLocationSuggestion, idUser, function(resultAdd){
+		if (resultAdd == "error") {
+			res.statusCode = 500;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+		else {
+			res.statusCode = 201;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+	});
+});
+
+app.delete('/eventlocationsuggestionvote/:ideventlocationsuggestionvote', function(req, res) {
+	eventlocationsuggestionvotemodel.remove(req.params.ideventlocationsuggestionvote, function(resultFind){
+		if(resultFind == "error" || resultFind == null){
+			res.statusCode = 400;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+		else {
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+	});
+});
+
+
+/****** API EVENT USER ******/
+
+//retourne les events associés à l'user dont l'id est passé en paramètre
+app.get('/eventuser/:idUser', function(req, res){
+    eventusermodel.findByUser(req.params.idUser, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		} 
+    });
+});
+
+app.post('/eventuser/:idEventUser/:status', function(req, res) {
+    eventusermodel.updateStatus(req.params.idEventUser, req.params.status, function(resultAdd){
+		if (resultAdd == "error") {
+			res.statusCode = 500;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+		else {
+			res.statusCode = 201;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+    });
+});
+
+app.post('/eventuser/', function(req, res) {
+	var idEvent = req.body.idEvent;
+	var idUser = req.body.idUser;
+	eventusermodel.add(idEvent, idUser, function(resultAdd){
+		if (resultAdd == "error") {
+			res.statusCode = 500;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+		else {
+			res.statusCode = 201;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+	});
+});
+
+app.delete('/eventuser/:ideventuser', function(req, res) {
+	eventusermodel.remove(req.params.ideventuser, function(resultFind){
+		if(resultFind == "error" || resultFind == null){
+			res.statusCode = 400;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+	});
+});
+
+
+/****** API EVENT STUFF ******/
+
+//retourne l'event stuff d'après son id
+app.get('/eventstuff/:ideventstuff', function(req, res){
+    eventstuffmodel.findById(req.params.ideventstuff, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		} 
+    });
+});
+
+//retourne les event stuff d'après l'id de l'event associé
+app.get('/eventstuff/event/:idevent', function(req, res){
+    eventstuffmodel.findByEvent(req.params.idevent, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		} 
+    });
+});
+
+app.post('/eventstuff/', function(req, res) {
+	var idEvent = req.body.idEvent;
+	var idUser = req.body.idUser;
+	var content = req.body.content;
+	eventstuffmodel.add(idEvent, idUser, content, function(resultAdd){
+		if (resultAdd == "error") {
+			res.statusCode = 500;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+		else {
+			res.statusCode = 201;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+	});
+});
+
+app.post('/eventstuff/:idEventStuff/:content', function(req, res) {
+    eventstuffmodel.updateContent(req.params.idEventStuff, req.params.content, function(resultAdd){
+		if (resultAdd == "error") {
+			res.statusCode = 500;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+		else {
+			res.statusCode = 201;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send();
+		}
+    });
+});
+
+app.delete('/eventstuff/:ideventstuff', function(req, res) {
+	eventstuffmodel.remove(req.params.ideventstuff, function(resultFind){
+		if(resultFind == "error" || resultFind == null){
+			res.statusCode = 400;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		}
+	});
+});
+
 
 app.use(function(req, res) {
 	res.statusCode = 400;
@@ -266,5 +508,3 @@ app.use(function(req, res) {
 });
 
 module.exports = app;
-
-//server.close();

@@ -3,7 +3,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
     
-var schema_event_location_suggestion = Schema({ id : ObjectId, idEvent : ObjectId, category : String, location: String, voteCount: Number});
+var schema_event_location_suggestion = Schema({ id : ObjectId, idEvent : ObjectId, category : String, 
+                                    location: String, voteCount: Number}, { versionKey: false });
 var EventLocationSuggestion = mongoose.model('event_location_suggestion', schema_event_location_suggestion, 'event_location_suggestion');
 
 module.exports = {
@@ -13,13 +14,6 @@ module.exports = {
 			if (err) 
 				return callback("error");
 			return callback(doc)
-		});
-	},
-	clean: function(callback) {
-		EventLocationSuggestion.remove(function(err) {
-			if (err) 
-				return callback("error");
-			return callback("ok")
 		});
 	},
 	remove: function(id, callback) {
