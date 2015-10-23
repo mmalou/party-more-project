@@ -19,6 +19,7 @@ var eventlocationsuggestionmodel = require(__dirname +"/models/eventlocationsugg
 var eventlocationsuggestionvotemodel = require(__dirname +"/models/eventlocationsuggestionvotemodel.js");
 var eventusermodel = require(__dirname +"/models/eventusermodel.js");
 var eventstuffmodel = require(__dirname +"/models/eventstuffmodel.js");
+var eventcategorymodel = require(__dirname +"/models/eventcategorymodel.js");
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -522,6 +523,53 @@ app.delete('/eventstuff/:ideventstuff', function(req, res) {
 	});
 });
 
+
+/****** API EVENT CATEGORY ******/
+
+app.get('/eventcategory/:name', function(req, res){
+    eventcategorymodel.findByName(req.params.name, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		} 
+    });
+});
+
+app.get('/eventcategory/:id', function(req, res){
+    eventcategorymodel.findById(req.params.id, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		} 
+    });
+});
+
+app.get('/eventcategory/', function(req, res){
+    eventcategorymodel.findAll(function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else{
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(resultFind);
+		} 
+    });
+});
 
 app.use(function(req, res) {
 	res.statusCode = 400;
