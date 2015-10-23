@@ -49,6 +49,27 @@ app.get('/user/:iduser', function(req, res){
 });
 
 //retourne l'utilisateur d'après son mail
+app.get('/user/mail/:username', function(req, res){
+    usermodel.findByUsername(req.params.username, function(resultFind){
+        if(resultFind == "error" || resultFind == null){
+			res.statusCode = 404;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send("Not Found");
+		}
+		else {
+			var sortArray = [];
+			for (var i in resultFind){
+				sortArray.push({mail: resultFind[i].mail, password: resultFind[i].password,
+		                    username: resultFind[i].username});
+			}
+			res.statusCode = 200;
+			res.header("Cache-Control", "public, max-age=1209600");
+			res.send(sortArray);
+		} 
+    });
+});
+
+//retourne l'utilisateur d'après son mail
 app.get('/user/mail/:mailuser', function(req, res){
     usermodel.findByMail(req.params.mailuser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
@@ -60,7 +81,7 @@ app.get('/user/mail/:mailuser', function(req, res){
 			var sortArray = [];
 			for (var i in resultFind){
 				sortArray.push({mail: resultFind[i].mail, password: resultFind[i].password,
-		                    firstname: resultFind[i].firstname, lastname: resultFind[i].lastname});
+		                    username: resultFind[i].username});
 			}
 			res.statusCode = 200;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -72,7 +93,8 @@ app.get('/user/mail/:mailuser', function(req, res){
 app.post('/user/', function(req, res) {
 	var mail = req.body.mail;
 	var password = req.body.password;
-	usermodel.add(mail, password, '', '', function(resultAdd){
+	var username = req.body.username;
+	usermodel.add(mail, password, username, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
