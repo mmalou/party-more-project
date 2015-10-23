@@ -1,17 +1,11 @@
-var http = require('http')
-var url = require('url')
-var querystring = require('querystring')
 var express = require('express')
 var bodyParser = require('body-parser')
 var cors = require('cors')
 var app = express();
 
 var mongoose = require('mongoose');
-var uriUtil = require('mongodb-uri');
-var mongodbUri = 'mongodb://admin:jujutropbeau123@ds055862.mongolab.com:55862/party-more-db';
-var mongooseUri = uriUtil.formatMongoose(mongodbUri);
 var db = mongoose.connection;
-mongoose.connect(mongooseUri);
+mongoose.connect('mongodb://admin:jujutropbeau123@ds055862.mongolab.com:55862/party-more-db');
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
