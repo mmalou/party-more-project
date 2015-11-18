@@ -35,6 +35,7 @@ app.use(function(req, res, next) {
 
 //retourne l'utilisateur dont l'id est passé en paramètre
 app.get('/user/:iduser', function(req, res){
+	console.log("2");
     usermodel.findById(req.params.iduser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
@@ -49,8 +50,8 @@ app.get('/user/:iduser', function(req, res){
     });
 });
 
-//retourne l'utilisateur d'après son mail
-app.get('/user/mail/:username', function(req, res){
+//retourne l'utilisateur d'après son username
+app.get('/user/username/:username', function(req, res){
     usermodel.findByUsername(req.params.username, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
