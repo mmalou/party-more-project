@@ -42,5 +42,12 @@ module.exports = {
 				return callback("error");
 			return callback(doc);
 		});
+	},
+	findByMailOrUsername : function(mail, username, callback){
+		User.find( { $or:[ {username:username}, {mail:mail}]}, function(err,doc){
+			if (err) 
+				return callback("error");
+			return callback(doc);
+		});
 	}
 };

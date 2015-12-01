@@ -96,14 +96,27 @@ app.post('/user/', function(req, res) {
 	var mail = req.body.mail;
 	var password = req.body.password;
 	var username = req.body.username;
-	usermodel.add(mail, password, username, function(resultAdd){
-		if (resultAdd == "error") {
+
+	usermodel.findByMailOrUsername(mail, username, function(users){
+		if (users == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send();
-		}
-		else {
-			res.statusCode = 201;
+		} else if(users.length == 0){
+			usermodel.add(mail, password, username, function(resultAdd){
+				if (resultAdd == "error") {
+					res.statusCode = 500;
+					res.header("Cache-Control", "public, max-age=1209600");
+					res.send();
+				}
+				else {
+					res.statusCode = 201;
+					res.header("Cache-Control", "public, max-age=1209600");
+					res.send();
+				}
+			});
+		} else {
+			res.statusCode = 409;
 			res.header("Cache-Control", "public, max-age=1209600");
 			res.send();
 		}
