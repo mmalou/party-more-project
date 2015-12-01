@@ -62,7 +62,7 @@ app.get('/user/username/:username', function(req, res){
 			var sortArray = [];
 			for (var i in resultFind){
 				sortArray.push({mail: resultFind[i].mail, password: resultFind[i].password,
-		                    username: resultFind[i].username});
+		                    username: resultFind[i].username, id:resultFind[i]._id});
 			}
 			res.statusCode = 200;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -393,17 +393,20 @@ app.delete('/eventlocationsuggestionvote/:ideventlocationsuggestionvote', functi
 
 //retourne les events associés à l'user dont l'id est passé en paramètre
 app.get('/eventuser/:idUser', function(req, res){
-    eventusermodel.findByUser(req.params.idUser, function(resultFind){
-        if(resultFind == "error" || resultFind == null){
-			res.statusCode = 404;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send("Not Found");
+	console.log("/eventuser/"+req.params.idUser);
+    eventusermodel.findByUser(req.params.idUser, function(resultFindEventsIds){		
+		var eventsId = [];
+		for(event in resultFindEventsIds) {
+			eventsId.push(resultFindEventsIds[event].idEvent);
 		}
-		else{
-			res.statusCode = 200;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(resultFind);
-		} 
+		
+		eventmodel.getEventsbyIds(eventsId, function(resultFindEvents){
+			if(resultFindEvents != "error" || resultFindEvents != null){
+				res.statusCode = 200;
+				res.header("Cache-Control", "public, max-age=1209600");
+				res.send(resultFindEvents);
+			}
+		});
     });
 });
 

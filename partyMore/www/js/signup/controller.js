@@ -29,7 +29,6 @@ angular.module('SignupController', [])
 		var pass2 = $scope.inscriptionData.password2;
 		
 		/** USERNAME **/
-		
 		var usernameOK = false;
 		// Username empty ?
 		if(username.length == 0)
@@ -42,17 +41,12 @@ angular.module('SignupController', [])
 				$scope.validation.usernameInvalid = true;
 			}
 			else {
-				console.log("username success");
 				// Username exist?
 				SignupSrv.getUserByUsername(username).success(function(result){
-					if(result.length == 0) {
-						console.log("username exist 0");
+					if(result.length == 0) 
 						usernameOK = true;
-					}
-					else {
-						console.log("username exist 1");
+					else 
 						$scope.validation.usernameExists = true;
-					}
 				})
 				.error(function() {
 					console.log("Error checking username");
@@ -61,7 +55,6 @@ angular.module('SignupController', [])
 		}
 
 		/** EMAIL **/
-		
 		var mailOK = false;
 		if(mail.length == 0)
 			$scope.validation.emailRequired = true;
@@ -73,7 +66,7 @@ angular.module('SignupController', [])
 			else {
 				// Mail exists ?
 				SignupSrv.getUserByMail(mail).success(function(result){
-					if(result.length == 0)
+					if(result.length == 0) 
 						mailOK = true;
 					else 
 						$scope.validation.emailExists = true;
@@ -85,7 +78,6 @@ angular.module('SignupController', [])
 		}
 			
 		/** PASSWORD **/
-		
 		var passwordOK = false;
 		if(pass1.length == 0 || pass2.length == 0)
 			$scope.validation.passwordRequired = true;
@@ -95,16 +87,17 @@ angular.module('SignupController', [])
 			else {
 				if(pass1.length < 6) 
 					$scope.validation.passwordShort = true;
-				else
+				else 
 					passwordOK = true;
 			}
 		}
 		
-	 	var user = { username: $scope.inscriptionData.username, mail: $scope.inscriptionData.mail , password: $scope.inscriptionData.password1};
-
-		/*
-	 	SignupSrv.signupUser(user).success(function(){
-
-	 	});*/
+		// FIXME: ASYNCHRONE ? mail et username n'ont pas finis avant d'arriver là...
+		if(usernameOK && mailOK && passwordOK) {
+			console.log("sending");
+			var user = { username: $scope.inscriptionData.username, mail: $scope.inscriptionData.mail , password: $scope.inscriptionData.password1};
+			SignupSrv.signupUser(user).success(function(){
+			});
+		}
 	};
 });

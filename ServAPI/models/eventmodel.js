@@ -35,5 +35,18 @@ module.exports = {
 				return callback("error");
 			return callback(doc);
 		});
+	},
+	getEventsbyIds: function(ids, callback) {
+		var events = [];
+		for(index in ids){
+			Event.findById(ids[index], function (err, doc){
+				if (err) 
+					return callback("error");
+				events.push(doc);
+				if(events.length == ids.length) {
+					return callback(events);
+				}
+			});
+		}
 	}
 };

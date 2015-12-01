@@ -7,7 +7,9 @@
 angular.module('starter', ['ionic', 
   'MenuController',
   'SignupController',
-  'SignupService'
+  'SignupService',
+  'BrowseEventsController',
+  'BrowseEventsService',
 ])
 
 .run(function($ionicPlatform) {
@@ -42,6 +44,16 @@ angular.module('starter', ['ionic',
       'menuContent': {
         templateUrl: 'templates/signup.html',
         controller: 'SignupCtrl'
+      }
+    }
+  })
+  
+  .state('app.browseEvents', {
+    url: '/browseEvents',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/browseEvents.html',
+        controller: 'BrowseEventsCtrl'
       }
     }
   });
