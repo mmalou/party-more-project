@@ -1,0 +1,46 @@
+// Commande pour compiler le scss et le minifier dans le fichier public/assets/css/custom.min.css
+// sass --watch partyMore/www/scss/style.scss:partyMore/www/css/style.min.css --style compressed --scss
+
+/** MENU **/
+ion-side-menu {
+	ion-header-bar {
+		background-color: #16a085 !important;
+		border-bottom: 1px solid #ecf0f1 !important;
+
+		h1{
+			color: #fff !important;
+		}
+	}
+
+	ion-content {
+		background-color: #16a085;
+		font-weight: bold;
+	}
+}
+
+.menu-item{
+	background-color: #1abc9c !important;
+	color: #fff;
+	border-color: #16a085;
+
+	&:first-child {
+		border-top : 0px;
+	}
+
+	a {
+		background-color: #1abc9c !important;
+		color: #fff;
+		border-color: #16a085;
+	}
+}
+
+/** CONTENT **/
+ion-side-menu-content {
+	ion-header-bar {
+		background-color: #16a085 !important;
+	}
+
+	* {
+		color: #fff !important;
+	}
+}
