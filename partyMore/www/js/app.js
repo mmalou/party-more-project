@@ -10,6 +10,12 @@ angular.module('starter', ['ionic',
   'SignupService',
   'BrowseEventsController',
   'BrowseEventsService',
+  'LoginController',
+  'LoginService',
+  'ContactController',
+  'ContactService',
+  'AddcontactController',
+  'AddcontactService'
 ])
 
 .run(function($ionicPlatform) {
@@ -54,6 +60,36 @@ angular.module('starter', ['ionic',
       'menuContent': {
         templateUrl: 'templates/browseEvents.html',
         controller: 'BrowseEventsCtrl'
+      }
+    }
+  })
+  
+  .state('app.login', {
+    url: '/login',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/login.html',
+        controller: 'LoginCtrl'
+      }
+    }
+  })
+  
+  .state('app.contact', {
+    url: '/contact',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/contact.html',
+        controller: 'ContactCtrl'
+      }
+    }
+  })
+  
+   .state('app.addcontact', {
+    url: '/addcontact',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/addcontact.html',
+        controller: 'AddcontactCtrl'
       }
     }
   });
