@@ -1,8 +1,8 @@
 angular.module('AddcontactController', [])
-.controller('AddcontactCtrl', function($scope, AddcontactSrv) {
+.controller('AddcontactCtrl', function($scope, AddcontactSrv, $localStorage) {
 	
 	// Session
-	id_user = '564b0b10b7d5b8382bc6f45b';
+	console.log($localStorage.user);
 	
 	$scope.contactData = {
 		username : ""

@@ -15,7 +15,8 @@ angular.module('starter', ['ionic',
   'ContactController',
   'ContactService',
   'AddcontactController',
-  'AddcontactService'
+  'AddcontactService',
+  'ngStorage'
 ])
 
 .run(function($ionicPlatform) {

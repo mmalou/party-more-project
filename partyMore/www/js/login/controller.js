@@ -1,5 +1,5 @@
 angular.module('LoginController', [])
-.controller('LoginCtrl', function($scope, LoginSrv) {
+.controller('LoginCtrl', function($scope, LoginSrv, $localStorage) {
 	
 	$scope.loginData = {
 		username : "",
@@ -33,7 +33,7 @@ angular.module('LoginController', [])
 				}
 				else {
 					if (result[0].password == $scope.loginData.password) {
-						console.log('login true');
+						$localStorage.user = result[0];
 					}
 					else {
 						$scope.validation.passwordIncorrect = true;
