@@ -1,9 +1,15 @@
 var mongoose = require('mongoose');
-
-var Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema;
     
-var schema_user = Schema({ id : ObjectId, username : String , mail : String, password : String, firstname: String, lastname: String}, { versionKey: false });
+var schema_user = Schema({
+	username 	: String,
+	mail 		: String,
+	password 	: String,
+	firstname	: String,
+	lastname	: String,
+	contacts	: Array},
+	{ versionKey: false });
+
 var User = mongoose.model('user', schema_user, 'user');
 
 module.exports = {

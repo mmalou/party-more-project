@@ -1,25 +1,22 @@
-var express = require('express')
-var bodyParser = require('body-parser')
-var cors = require('cors')
-var app = express();
+var express 	= require('express')
+var bodyParser 	= require('body-parser')
+var cors 		= require('cors')
+var app 		= express();
+var mongoose 	= require('mongoose');
 
-var mongoose = require('mongoose');
-var db = mongoose.connection;
-mongoose.connect('mongodb://admin:jujutropbeau123@ds055862.mongolab.com:55862/party-more-db');
+var router      = require('./routes/index'); 
+var config 		= require('./config/config');
+
+// A ENLEVER APRES REFACTO DE LA BDD
+var model 		= require('./models/index');
+
+var db 			= mongoose.connection;
+mongoose.connect(config.db.url);
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
-	console.log("Connection ok");
+	console.log("Connection db OK");
 });
-
-var usermodel = require(__dirname +"/models/usermodel.js");
-var usercontactmodel = require(__dirname +"/models/usercontactmodel.js");
-var eventmodel = require(__dirname +"/models/eventmodel.js");
-var eventlocationsuggestionmodel = require(__dirname +"/models/eventlocationsuggestionmodel.js");
-var eventlocationsuggestionvotemodel = require(__dirname +"/models/eventlocationsuggestionvotemodel.js");
-var eventusermodel = require(__dirname +"/models/eventusermodel.js");
-var eventstuffmodel = require(__dirname +"/models/eventstuffmodel.js");
-var eventcategorymodel = require(__dirname +"/models/eventcategorymodel.js");
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -31,119 +28,15 @@ app.use(function(req, res, next) {
     next();
 });
 
-/****** API USER ******/
 
-//retourne l'utilisateur dont l'id est passé en paramètre
-app.get('/user/:iduser', function(req, res){
-	console.log("2");
-    usermodel.findById(req.params.iduser, function(resultFind){
-        if(resultFind == "error" || resultFind == null){
-			res.statusCode = 404;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send("Not Found");
-		}
-		else{
-			res.statusCode = 200;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(resultFind);
-		} 
-    });
-});
-
-//retourne l'utilisateur d'après son username
-app.get('/user/username/:username', function(req, res){
-    usermodel.findByUsername(req.params.username, function(resultFind){
-        if(resultFind == "error" || resultFind == null){
-			res.statusCode = 404;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send("Not Found");
-		}
-		else {
-			var sortArray = [];
-			for (var i in resultFind){
-				sortArray.push({mail: resultFind[i].mail, password: resultFind[i].password,
-		                    username: resultFind[i].username, id:resultFind[i]._id});
-			}
-			res.statusCode = 200;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(sortArray);
-		} 
-    });
-});
-
-//retourne l'utilisateur d'après son mail
-app.get('/user/mail/:mailuser', function(req, res){
-    usermodel.findByMail(req.params.mailuser, function(resultFind){
-        if(resultFind == "error" || resultFind == null){
-			res.statusCode = 404;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send("Not Found");
-		}
-		else {
-			var sortArray = [];
-			for (var i in resultFind){
-				sortArray.push({mail: resultFind[i].mail, password: resultFind[i].password,
-		                    username: resultFind[i].username});
-			}
-			res.statusCode = 200;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(sortArray);
-		} 
-    });
-});
-
-app.post('/user/', function(req, res) {
-	var mail = req.body.mail;
-	var password = req.body.password;
-	var username = req.body.username;
-
-	usermodel.findByMailOrUsername(mail, username, function(users){
-		if (users == "error") {
-			res.statusCode = 500;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send();
-		} else if(users.length == 0){
-			usermodel.add(mail, password, username, function(resultAdd){
-				if (resultAdd == "error") {
-					res.statusCode = 500;
-					res.header("Cache-Control", "public, max-age=1209600");
-					res.send();
-				}
-				else {
-					res.statusCode = 201;
-					res.header("Cache-Control", "public, max-age=1209600");
-					res.send();
-				}
-			});
-		} else {
-			res.statusCode = 409;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send();
-		}
-	});
-});
-
-app.delete('/user/:iduser', function(req, res) {
-	usermodel.remove(req.params.iduser, function(resultFind){
-		if(resultFind == "error" || resultFind == null){
-			res.statusCode = 400;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(resultFind);
-		}
-		else{
-			res.statusCode = 200;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(resultFind);
-		}
-	});
-});
-
+app.use('/user', router.user);
+app.use('/event', router.event);
 
 /****** API USER CONTACT ******/
 
 //retourne un contact d'après son mail
 app.get('/usercontact/:mailuser', function(req, res){
-    usercontactmodel.findAllContactsByMail(req.params.mailuser, function(resultFind){
+    model.usercontact.findAllContactsByMail(req.params.mailuser, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -160,7 +53,7 @@ app.get('/usercontact/:mailuser', function(req, res){
 app.post('/usercontact/', function(req, res) {
 	var mailUser = req.body.mailUser;
 	var mailContact = req.body.mailContact;
-	usermodel.add(mailUser, mailContact, function(resultAdd){
+	model.user.add(mailUser, mailContact, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -175,7 +68,7 @@ app.post('/usercontact/', function(req, res) {
 });
 
 app.delete('/usercontact/:idusercontact', function(req, res) {
-	usercontactmodel.remove(req.params.idusercontact, function(resultFind){
+	model.usercontact.remove(req.params.idusercontact, function(resultFind){
 		if(resultFind == "error" || resultFind == null){
 			res.statusCode = 400;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -191,65 +84,11 @@ app.delete('/usercontact/:idusercontact', function(req, res) {
 
 /****** API EVENT ******/
 
-//retourne un event d'après son id
-app.get('/event/:idevent', function(req, res){
-    eventmodel.findById(req.params.idevent, function(resultFind){
-        if(resultFind == "error" || resultFind == null){
-			res.statusCode = 404;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send("Not Found");
-		}
-		else{
-			var sortObject = {name: resultFind.name, category: resultFind.category,
-		                    dateStart: resultFind.dateStart, description: resultFind.description, location: resultFind.location, mailUser: resultFind.mailUser};
-			res.statusCode = 200;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(sortObject);
-		} 
-    });
-});
-
-app.post('/event/', function(req, res) {
-	var name = req.body.name;
-	var category = req.body.category;
-	var dateStart = req.body.dateStart;
-	var description = req.body.description;
-	var location = req.body.location;
-	var mailUser = req.body.mailUser;
-	eventmodel.add(name, category, dateStart, description, location, mailUser, function(resultAdd){
-		if (resultAdd == "error") {
-			res.statusCode = 500;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send();
-		}
-		else {
-			res.statusCode = 201;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send();
-		}
-	});
-});
-
-app.delete('/event/:idevent', function(req, res) {
-	eventmodel.remove(req.params.idevent, function(resultFind){
-		if(resultFind == "error" || resultFind == null){
-			res.statusCode = 400;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(resultFind);
-		}
-		else {
-			res.statusCode = 200;
-			res.header("Cache-Control", "public, max-age=1209600");
-			res.send(resultFind);
-		}
-	});
-});
-
 /****** API EVENT LOCATION SUGGESTION ******/
 
 //retourne une suggestion de localisation d'après son id
 app.get('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res){
-    eventlocationsuggestionmodel.findById(req.params.ideventlocationsuggestion, function(resultFind){
+    model.eventlocationsuggestion.findById(req.params.ideventlocationsuggestion, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -265,7 +104,7 @@ app.get('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res
 
 //retourne toutes les suggestions de l'event dont l'id est passé en paramètre
 app.get('/eventlocationsuggestion/event/:idevent', function(req, res){
-    eventlocationsuggestionmodel.findByEventId(req.params.idevent, function(resultFind){
+    model.eventlocationsuggestion.findByEventId(req.params.idevent, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -289,7 +128,7 @@ app.post('/eventlocationsuggestion/', function(req, res) {
 	var category = req.body.category;
 	var location = req.body.location;
 	var voteCount = req.body.voteCount;
-	eventlocationsuggestionmodel.add(idEvent, category, location, voteCount, function(resultAdd){
+	model.eventlocationsuggestion.add(idEvent, category, location, voteCount, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -304,7 +143,7 @@ app.post('/eventlocationsuggestion/', function(req, res) {
 });
 
 app.delete('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res) {
-	eventlocationsuggestionmodel.remove(req.params.ideventlocationsuggestion, function(resultFind){
+	model.eventlocationsuggestion.remove(req.params.ideventlocationsuggestion, function(resultFind){
 		if(resultFind == "error" || resultFind == null){
 			res.statusCode = 400;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -322,7 +161,7 @@ app.delete('/eventlocationsuggestion/:ideventlocationsuggestion', function(req, 
 
 //retourne le vote dont l'id est passé en paramètre
 app.get('/eventlocationsuggestionvote/:ideventlocationsuggestionvote', function(req, res){
-    eventlocationsuggestionvotemodel.findById(req.params.ideventlocationsuggestionvote, function(resultFind){
+    model.eventlocationsuggestionvote.findById(req.params.ideventlocationsuggestionvote, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -338,7 +177,7 @@ app.get('/eventlocationsuggestionvote/:ideventlocationsuggestionvote', function(
 
 //retourne tous les votes associés à la suggestion passé en paramètre
 app.get('/eventlocationsuggestionvote/eventlocationsuggestion/:ideventlocationsuggestion', function(req, res){
-    eventlocationsuggestionvotemodel.findByEventLocationSuggestionId(req.params.ideventlocationsuggestion, function(resultFind){
+    model.eventlocationsuggestionvote.findByEventLocationSuggestionId(req.params.ideventlocationsuggestion, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -359,7 +198,7 @@ app.get('/eventlocationsuggestionvote/eventlocationsuggestion/:ideventlocationsu
 app.post('/eventlocationsuggestionvote/', function(req, res) {
 	var idEventLocationSuggestion = req.body.idEventLocationSuggestion;
 	var idUser = req.body.idUser;
-	eventlocationsuggestionvotemodel.add(idEventLocationSuggestion, idUser, function(resultAdd){
+	model.eventlocationsuggestionvote.add(idEventLocationSuggestion, idUser, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -374,7 +213,7 @@ app.post('/eventlocationsuggestionvote/', function(req, res) {
 });
 
 app.delete('/eventlocationsuggestionvote/:ideventlocationsuggestionvote', function(req, res) {
-	eventlocationsuggestionvotemodel.remove(req.params.ideventlocationsuggestionvote, function(resultFind){
+	model.eventlocationsuggestionvote.remove(req.params.ideventlocationsuggestionvote, function(resultFind){
 		if(resultFind == "error" || resultFind == null){
 			res.statusCode = 400;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -393,8 +232,7 @@ app.delete('/eventlocationsuggestionvote/:ideventlocationsuggestionvote', functi
 
 //retourne les events associés à l'user dont l'id est passé en paramètre
 app.get('/eventuser/:idUser', function(req, res){
-	console.log("/eventuser/"+req.params.idUser);
-    eventusermodel.findByUser(req.params.idUser, function(resultFindEventsIds){		
+    model.eventuser.findByUser(req.params.idUser, function(resultFindEventsIds){		
 		var eventsId = [];
 		for(event in resultFindEventsIds) {
 			eventsId.push(resultFindEventsIds[event].idEvent);
@@ -411,7 +249,7 @@ app.get('/eventuser/:idUser', function(req, res){
 });
 
 app.post('/eventuser/:idEventUser/:status', function(req, res) {
-    eventusermodel.updateStatus(req.params.idEventUser, req.params.status, function(resultAdd){
+    model.eventuser.updateStatus(req.params.idEventUser, req.params.status, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -428,7 +266,7 @@ app.post('/eventuser/:idEventUser/:status', function(req, res) {
 app.post('/eventuser/', function(req, res) {
 	var idEvent = req.body.idEvent;
 	var idUser = req.body.idUser;
-	eventusermodel.add(idEvent, idUser, function(resultAdd){
+	model.eventuser.add(idEvent, idUser, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -443,7 +281,7 @@ app.post('/eventuser/', function(req, res) {
 });
 
 app.delete('/eventuser/:ideventuser', function(req, res) {
-	eventusermodel.remove(req.params.ideventuser, function(resultFind){
+	model.eventuser.remove(req.params.ideventuser, function(resultFind){
 		if(resultFind == "error" || resultFind == null){
 			res.statusCode = 400;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -462,7 +300,7 @@ app.delete('/eventuser/:ideventuser', function(req, res) {
 
 //retourne l'event stuff d'après son id
 app.get('/eventstuff/:ideventstuff', function(req, res){
-    eventstuffmodel.findById(req.params.ideventstuff, function(resultFind){
+    model.eventstuff.findById(req.params.ideventstuff, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -478,7 +316,7 @@ app.get('/eventstuff/:ideventstuff', function(req, res){
 
 //retourne les event stuff d'après l'id de l'event associé
 app.get('/eventstuff/event/:idevent', function(req, res){
-    eventstuffmodel.findByEvent(req.params.idevent, function(resultFind){
+    model.eventstuff.findByEvent(req.params.idevent, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -496,7 +334,7 @@ app.post('/eventstuff/', function(req, res) {
 	var idEvent = req.body.idEvent;
 	var idUser = req.body.idUser;
 	var content = req.body.content;
-	eventstuffmodel.add(idEvent, idUser, content, function(resultAdd){
+	model.eventstuff.add(idEvent, idUser, content, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -511,7 +349,7 @@ app.post('/eventstuff/', function(req, res) {
 });
 
 app.post('/eventstuff/:idEventStuff/:content', function(req, res) {
-    eventstuffmodel.updateContent(req.params.idEventStuff, req.params.content, function(resultAdd){
+    model.eventstuff.updateContent(req.params.idEventStuff, req.params.content, function(resultAdd){
 		if (resultAdd == "error") {
 			res.statusCode = 500;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -526,7 +364,7 @@ app.post('/eventstuff/:idEventStuff/:content', function(req, res) {
 });
 
 app.delete('/eventstuff/:ideventstuff', function(req, res) {
-	eventstuffmodel.remove(req.params.ideventstuff, function(resultFind){
+	model.eventstuff.remove(req.params.ideventstuff, function(resultFind){
 		if(resultFind == "error" || resultFind == null){
 			res.statusCode = 400;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -544,7 +382,7 @@ app.delete('/eventstuff/:ideventstuff', function(req, res) {
 /****** API EVENT CATEGORY ******/
 
 app.get('/eventcategory/:name', function(req, res){
-    eventcategorymodel.findByName(req.params.name, function(resultFind){
+    model.eventcategory.findByName(req.params.name, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -559,7 +397,7 @@ app.get('/eventcategory/:name', function(req, res){
 });
 
 app.get('/eventcategory/:id', function(req, res){
-    eventcategorymodel.findById(req.params.id, function(resultFind){
+    model.eventcategory.findById(req.params.id, function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
@@ -574,7 +412,7 @@ app.get('/eventcategory/:id', function(req, res){
 });
 
 app.get('/eventcategory/', function(req, res){
-    eventcategorymodel.findAll(function(resultFind){
+    model.eventcategory.findAll(function(resultFind){
         if(resultFind == "error" || resultFind == null){
 			res.statusCode = 404;
 			res.header("Cache-Control", "public, max-age=1209600");
