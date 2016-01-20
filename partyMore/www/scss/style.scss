@@ -1,46 +1,67 @@
 // Commande pour compiler le scss et le minifier dans le fichier public/assets/css/custom.min.css
 // sass --watch partyMore/www/scss/style.scss:partyMore/www/css/style.min.css --style compressed --scss
 
+
+$primary-color:  #25282A;
+$secondary-color:  #34495e;
+$font-color:  #3498db;
+
 /** MENU **/
 ion-side-menu {
 	ion-header-bar {
-		background-color: #16a085 !important;
-		border-bottom: 1px solid #ecf0f1 !important;
+		background-color: $primary-color !important;
+		border-bottom: 1px solid #95a5a6 !important;
 
 		h1{
-			color: #fff !important;
+			color: $font-color !important;
 		}
 	}
 
 	ion-content {
-		background-color: #16a085;
+		background-color: $primary-color;
 		font-weight: bold;
 	}
 }
 
 .menu-item{
-	background-color: #1abc9c !important;
-	color: #fff;
-	border-color: #16a085;
+	background-color: $secondary-color !important;
+	color: $font-color;
+	border-color: $primary-color;
 
 	&:first-child {
 		border-top : 0px;
 	}
 
 	a {
-		background-color: #1abc9c !important;
-		color: #fff;
-		border-color: #16a085;
+		background-color: $secondary-color !important;
+		color: $font-color;
+		border-color: $primary-color;
 	}
 }
 
 /** CONTENT **/
 ion-side-menu-content {
 	ion-header-bar {
-		background-color: #16a085 !important;
-	}
+		background-color: $primary-color !important;
 
-	* {
-		color: #fff !important;
+		.header-item {
+			color: $font-color !important;
+			button {
+				color: $font-color !important;
+			}
+		}
+	}
+}
+
+ion-modal-view {
+	ion-header-bar {
+		background-color: $primary-color !important;
+
+		.header-item {
+			color: $font-color !important;
+			button {
+				color: $font-color !important;
+			}
+		}
 	}
 }

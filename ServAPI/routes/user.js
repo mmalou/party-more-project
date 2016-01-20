@@ -35,6 +35,24 @@ router.route('/:iduser')
 		});
 	});
 
+router.route('/login')
+	.get(function(req, res){
+
+	//TODO : faire la logique LOGIN
+	  //   model.user.findById(req.params.iduser, function(resultFind){
+	  //       if(resultFind == "error" || resultFind == null){
+			// 	res.statusCode = 404;
+			// 	res.header("Cache-Control", "public, max-age=1209600");
+			// 	res.send("Not Found");
+			// }
+			// else{
+			// 	res.statusCode = 200;
+			// 	res.header("Cache-Control", "public, max-age=1209600");
+			// 	res.send(resultFind);
+			// } 
+	  //   });
+	});
+
 //retourne l'utilisateur d'après son username
 router.route('/username/:username')
 	.get(function(req, res){
@@ -104,9 +122,8 @@ router.route('/')
 					}
 				});
 			} else {
-				res.statusCode = 409;
 				res.header("Cache-Control", "public, max-age=1209600");
-				res.send();
+				res.status(409).json({message:"Username or mail already used, please choose another one"});
 			}
 		});
 	});

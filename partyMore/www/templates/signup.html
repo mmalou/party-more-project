@@ -1,4 +1,10 @@
-<ion-view view-title="Signup">
+<ion-modal-view>
+  <ion-header-bar class='bar-positive'>
+    <h1 class="title">Signup</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeSignupModal()"><i class="icon ion-close"></i></button>
+    </div>
+  </ion-header-bar>
   <ion-content>
     <form name="signupForm" ng-submit="doInscription()">
       <div class="list list-insert">
@@ -12,11 +18,11 @@
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Password</span>
-			<input type="password" placeholder="Password" ng-model="inscriptionData.password1">
+			<input type="password" placeholder="Password" ng-model="inscriptionData.password">
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Password verification</span>
-			<input type="password" placeholder="Password" ng-model="inscriptionData.password2">
+			<input type="password" placeholder="Password" ng-model="inscriptionData.passwordVerification">
 		</label>
         <label class="item">
           <button class="button button-block button-positive" type="submit">S'inscrire</button>
@@ -31,11 +37,9 @@
 		
 		<span style="color:red;" ng-show="validation.passwordRequired">Password required</span></br>
 		<span style="color:red;" ng-show="validation.passwordDifferent">Passwords not identicals</span></br>
-		<span style="color:red;" ng-show="validation.passwordShort">Password < 6 char</span></br>
-		
-
+		<span style="color:red;" ng-show="validation.passwordShort">Password < 6 chars</span></br>
 		
       </div>
     </form>
   </ion-content>
-</ion-view>
+</ion-modal-view>

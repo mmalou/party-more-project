@@ -1,5 +1,5 @@
 angular.module('LoginController', [])
-.controller('LoginCtrl', function($scope, LoginSrv, $localStorage) {
+.controller('LoginCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, SignupSrv, LoginSrv) {
 	
 	$scope.loginData = {
 		username : "",
@@ -8,38 +8,149 @@ angular.module('LoginController', [])
 	
 	$scope.doLogin = function() {
 		
-		$scope.validation = {
+		$scope.validationSignin = {
 			usernameRequired : false,
 			passwordRequired : false,
 			usernameNoExist : false,
 			passwordIncorrect : false
 		}
 		
-	 	var user = { username: $scope.loginData.username , password: $scope.loginData.password };
+		$scope.validationSignin.usernameRequired = ($scope.loginData.username.length == 0);
+		$scope.validationSignin.passwordRequired = ($scope.loginData.password.length == 0);
+
 		
-		if (user.username.length == 0) {
-			$scope.validation.usernameRequired = true;
-		}
-		
-		if (user.password.length == 0) {
-			$scope.validation.passwordRequired = true;
-		}
-		
-		
-		if (!$scope.validation.passwordRequired && !$scope.validation.usernameRequired) {
-			LoginSrv.getUserByUsername(user.username).success(function(result) {
-				if (result.length == 0) {
-					$scope.validation.usernameNoExist = true;
+		// TODO: Revoir la logique login
+		if (isValidForm($scope.validationSignin)) {
+			LoginSrv.getUserByUsername($scope.loginData.username).success(function(data) {
+				if (data.length == 0) {
+					$scope.validationSignin.usernameNoExist = true;
 				}
 				else {
-					if (result[0].password == $scope.loginData.password) {
-						$localStorage.user = result[0];
+					if (data[0].password == $scope.loginData.password) {
+						$localStorage.user = data[0];
 					}
 					else {
-						$scope.validation.passwordIncorrect = true;
+						$scope.validationSignin.passwordIncorrect = true;
 					}
 				}
 			});
 		}
 	};
+
+	//SIGNUP
+
+	$ionicModal.fromTemplateUrl('templates/signup.html', {
+	    scope: $scope
+	}).then(function(modal) {
+		$scope.modal = modal;
+	});
+
+	$scope.openSignupModal = function(){
+		$scope.modal.show();
+	}
+
+	$scope.closeSignupModal = function() {
+	    $scope.inscriptionData = {
+			username : "",
+			mail : "",
+			password : "",
+			passwordVerification : ""
+		};
+	    $scope.validationSignup = {
+			usernameRequired : false,
+			usernameInvalid : false,
+
+			emailRequired : false,
+			emailInvalid : false,
+
+			passwordRequired : false,
+			passwordShort : false,
+			passwordDifferent : false,
+		}
+	    $scope.modal.hide();
+  	};
+
+	$scope.inscriptionData = {
+		username : "",
+		mail : "",
+		password : "",
+		passwordVerification : ""
+	};
+		
+	$scope.doInscription = function() {
+			
+		$scope.validationSignup = {
+			usernameRequired : false,
+			usernameInvalid : false,
+
+			emailRequired : false,
+			emailInvalid : false,
+
+			passwordRequired : false,
+			passwordShort : false,
+			passwordDifferent : false,
+		}
+		
+		// USERNAME
+		$scope.validationSignup.usernameRequired = ($scope.inscriptionData.username.length == 0);
+		var regexMail =  /^[-\w\.\$@\*\!]{4,30}$/i;
+		$scope.validationSignup.usernameInvalid = (!regexMail.test($scope.inscriptionData.username));
+
+
+		// MAIL
+		$scope.validationSignup.emailRequired = ($scope.inscriptionData.mail.length == 0);
+		var regexMail =  /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+		$scope.validationSignup.emailInvalid = !regexMail.test($scope.inscriptionData.mail);
+
+
+		// PASSWORD
+		$scope.validationSignup.passwordRequired = ($scope.inscriptionData.password.length == 0 || $scope.inscriptionData.passwordVerification.length == 0);
+		$scope.validationSignup.passwordDifferent = ($scope.inscriptionData.password != $scope.inscriptionData.passwordVerification);
+		$scope.validationSignup.passwordShort = ($scope.inscriptionData.password.length < 6);
+
+		
+		if(isValidForm($scope.validation)) {
+			delete($scope.inscriptionData.passwordVerification);
+			SignupSrv.signupUser($scope.inscriptionData).success(function(data){
+
+			   	var alertPopup = $ionicPopup.alert({
+			     	title: 'Welcome !',
+			     	template: 'Go to login and sign in.',
+			     	buttons: [
+					   	{
+					     	text: 'OK',
+					    	type: 'button-balanced',
+					   	}
+					]
+			   	});
+
+			   	alertPopup.then(function(res) {
+			     	$scope.closeSignupModal();
+			   	});
+
+			}).error(function(data){
+				$scope.inscriptionData.passwordVerification = $scope.inscriptionData.password;
+				var alertPopup = $ionicPopup.alert({
+			     	title: 'Error !',
+			     	template: data.message,
+			     	buttons: [
+					   	{
+					     	text: 'OK',
+					    	type: 'button-assertive',
+					   	}
+					]
+			   	});
+
+			});
+		}
+	};
+
+	function isValidForm(validation){
+		for(var index in validation) {
+			if (validation.hasOwnProperty(index) && validation[index]) {
+				return false;
+			}
+		}
+		return true;
+	}
 });
