@@ -1,2 +1,2 @@
-module.exports.user 	= require('./user');
-module.exports.event 	= require('./event');
+module.exports.users	= require('./users');
+module.exports.events 	= require('./events');

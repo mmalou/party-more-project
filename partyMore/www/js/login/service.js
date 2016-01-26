@@ -1,8 +1,8 @@
 angular.module('LoginService', []).factory('LoginSrv', function($http) {
     return {
 
-	getUserByUsername : function(username) {
-		return $http.get("http://www.localhost:8081/user/username/"+username);
+	isAuthenticate : function(formData) {
+		return $http.post("http://localhost:8081/users/login", formData);
 	}
 
     };       

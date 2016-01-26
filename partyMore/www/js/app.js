@@ -8,8 +8,8 @@ angular.module('starter', ['ionic',
   'MenuController',
   'SignupController',
   'SignupService',
-  'BrowseEventsController',
-  'BrowseEventsService',
+  'EventsController',
+  'EventsService',
   'LoginController',
   'LoginService',
   'ContactController',
@@ -60,7 +60,7 @@ angular.module('starter', ['ionic',
     views: {
       'menuContent': {
         templateUrl: 'templates/browseEvents.html',
-        controller: 'BrowseEventsCtrl'
+        controller: 'EventsCtrl'
       }
     }
   })

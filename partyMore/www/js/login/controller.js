@@ -1,5 +1,5 @@
 angular.module('LoginController', [])
-.controller('LoginCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, SignupSrv, LoginSrv) {
+.controller('LoginCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, $state, SignupSrv, LoginSrv) {
 	
 	$scope.loginData = {
 		username : "",
@@ -19,20 +19,21 @@ angular.module('LoginController', [])
 		$scope.validationSignin.passwordRequired = ($scope.loginData.password.length == 0);
 
 		
-		// TODO: Revoir la logique login
 		if (isValidForm($scope.validationSignin)) {
-			LoginSrv.getUserByUsername($scope.loginData.username).success(function(data) {
-				if (data.length == 0) {
-					$scope.validationSignin.usernameNoExist = true;
-				}
-				else {
-					if (data[0].password == $scope.loginData.password) {
-						$localStorage.user = data[0];
-					}
-					else {
-						$scope.validationSignin.passwordIncorrect = true;
-					}
-				}
+			LoginSrv.isAuthenticate($scope.loginData).success(function(data) {
+				$localStorage.user = data;
+				$state.go('app.browseEvents');
+			}).error(function(data){
+				var alertPopup = $ionicPopup.alert({
+			     	title: 'Error !',
+			     	template: data.message,
+			     	buttons: [
+					   	{
+					     	text: 'OK',
+					    	type: 'button-assertive',
+					   	}
+					]
+			   	});
 			});
 		}
 	};

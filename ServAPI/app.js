@@ -29,8 +29,8 @@ app.use(function(req, res, next) {
 });
 
 
-app.use('/user', router.user);
-app.use('/event', router.event);
+app.use('/users', router.users);
+app.use('/events', router.events);
 
 /****** API USER CONTACT ******/
 

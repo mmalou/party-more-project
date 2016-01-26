@@ -39,24 +39,43 @@ router.route('/:idevent')
 
 router.route('/')
 	.post(function(req, res) {
-		var name = req.body.name;
-		var category = req.body.category;
-		var dateStart = req.body.dateStart;
+
+		var name 		= req.body.name;
+		var category 	= req.body.category;
+		var creator 	= req.body.creator;
+		var date 		= req.body.date;
 		var description = req.body.description;
-		var location = req.body.location;
-		var mailUser = req.body.mailUser;
-		model.event.add(name, category, dateStart, description, location, mailUser, function(resultAdd){
+		var location 	= req.body.location;
+		var status 		= req.body.status;
+
+		model.event.add(name, category, creator, date, description, location, status, function(resultAdd){
 			if (resultAdd == "error") {
 				res.statusCode = 500;
-				res.header("Cache-Control", "public, max-age=1209600");
 				res.send();
 			}
 			else {
-				res.statusCode = 201;
-				res.header("Cache-Control", "public, max-age=1209600");
-				res.send();
+				res.status(201).json(resultAdd);
 			}
 		});
+	})
+
+	.get(function(req, res){
+
+		if("userId" in req.query){
+			var userId = req.query.userId;
+			model.event.findByUserId(userId, function(resultFind){
+				res.json(resultFind);
+			});
+		} else if ("status" in req.query){
+			var status = req.query.status;
+			model.event.findByStatus(status, function(resultFind){
+				res.json(resultFind);
+			});
+		} else {
+			model.event.findByStatus("public", function(resultFind){
+				res.json(resultFind);
+			});
+		}
 	});
 
 module.exports = router;

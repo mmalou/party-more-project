@@ -21,7 +21,7 @@ router.route('/:iduser')
 	})
 
 	.delete(function(req, res) {
-		model.user.remove(req.params.iduser, function(resultFind){
+		model.user.removeById(req.params.iduser, function(resultFind){
 			if(resultFind == "error" || resultFind == null){
 				res.statusCode = 400;
 				res.header("Cache-Control", "public, max-age=1209600");
@@ -36,21 +36,25 @@ router.route('/:iduser')
 	});
 
 router.route('/login')
-	.get(function(req, res){
+	.post(function(req, res){
 
-	//TODO : faire la logique LOGIN
-	  //   model.user.findById(req.params.iduser, function(resultFind){
-	  //       if(resultFind == "error" || resultFind == null){
-			// 	res.statusCode = 404;
-			// 	res.header("Cache-Control", "public, max-age=1209600");
-			// 	res.send("Not Found");
-			// }
-			// else{
-			// 	res.statusCode = 200;
-			// 	res.header("Cache-Control", "public, max-age=1209600");
-			// 	res.send(resultFind);
-			// } 
-	  //   });
+		var username = req.body.username;
+		var password = req.body.password;
+
+	    model.user.findByUsernameAndPassword(username, password, function(resultFind){
+	        if(resultFind == "error" || resultFind == null){
+				res.statusCode = 204;
+				res.header("Cache-Control", "public, max-age=1209600");
+				res.send("Not Found");
+			}
+			else{
+				if(resultFind.length == 1){
+					res.json(resultFind[0]);
+				} else {
+					res.status(401).json({message: "Username and/or password incorrect"});
+				}
+			} 
+	    });
 	});
 
 //retourne l'utilisateur d'après son username

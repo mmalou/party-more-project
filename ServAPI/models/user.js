@@ -2,12 +2,13 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
     
 var schema_user = Schema({
-	username 	: String,
-	mail 		: String,
-	password 	: String,
-	firstname	: String,
-	lastname	: String,
-	contacts	: Array},
+	username 	: {type: String, 	default: null					},
+	mail 		: {type: String, 	default: null					},
+	password 	: {type: String, 	default: null					},
+	firstname	: {type: String, 	default: null					},
+	lastname	: {type: String, 	default: null					},
+	createdOn 	: {type: Number, 	default: new Date().getTime()	},
+	contacts	: {type: [String],  default: []					}},
 	{ versionKey: false });
 
 var User = mongoose.model('user', schema_user, 'user');
@@ -21,7 +22,7 @@ module.exports = {
 			return callback(doc)
 		});
 	},
-	remove: function(id, callback) {
+	removeById: function(id, callback) {
 		User.remove({ _id: id }, function(err) {
 			if (err) 
 				return callback("error");
@@ -37,6 +38,13 @@ module.exports = {
 	},
 	findByUsername: function(p_username, callback) {
 		User.find({ username : p_username }, function (err, doc){
+			if (err) 
+				return callback("error");
+			return callback(doc);
+		});
+	},
+	findByUsernameAndPassword: function(p_username, p_password, callback) {
+		User.find({ username : p_username, password : p_password }, function (err, doc){
 			if (err) 
 				return callback("error");
 			return callback(doc);
