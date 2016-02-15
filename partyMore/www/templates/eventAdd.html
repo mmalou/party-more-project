@@ -6,7 +6,7 @@
     </div>
   </ion-header-bar>
   <ion-content>
-    <form name="signupForm" ng-submit="doAddEvent()">
+    <form name="signupForm">
       <div class="list list-insert">
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Name</span>
@@ -22,7 +22,25 @@
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Date</span>
-			<input name="date" type="text" placeholder="Date" ng-model="formData.date">
+			<span>{{formData.date}}</span>
+			<div>
+				<ionic-datepicker input-obj="datepickerObject">
+			  		<button class="button button-block button-positive">Select</button>
+				</ionic-datepicker>
+			</div>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Hour</span>
+			<span>{{formData.hour}}</span>
+			<!-- <input name="hour" type="text" placeholder="Hour" ng-model="formData.hour"> -->
+			<div>
+				<ionic-timepicker input-obj="timePickerObject">
+				  <button class="button button-block button-positive overflowShow">
+				  	Select
+				    <standard-time-meridian etime='timePickerObject.inputEpochTime'></standard-time-meridian>
+				  </button>
+				</ionic-timepicker>
+			</div>
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Location</span>
@@ -33,7 +51,7 @@
 			<input name="status" type="text" placeholder="Status" ng-model="formData.status">
 		</label>
         <label class="item">
-          <button class="button button-block button-positive" type="submit">Valider</button>
+          <button class="button button-block button-balanced" type="button" ng-click="doAddEvent()">Valider</button>
         </label>
 		<!--span style="color:red;" ng-show="validation.usernameRequired">Username required</span></br>
 		<span style="color:red;" ng-show="validation.usernameInvalid">Username invalid</span></br>

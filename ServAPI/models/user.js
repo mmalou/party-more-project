@@ -96,5 +96,21 @@ module.exports = {
 
 			return callback(doc);
 		});
+	},
+	getContactsByIds: function(p_contacts, callback){
+		var _this = this;
+		if(p_contacts.length){
+			var result = [];
+			async.each(p_contacts, function(contact, callback){
+				_this.findById(contact._id, function(user){
+					result.push({user: user, status: contact.status});
+					callback();
+				});
+			}, function(err){
+				return callback(result);
+			});
+		} else {
+			return callback(p_contacts);
+		}
 	}
 };

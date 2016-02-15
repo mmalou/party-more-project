@@ -77,7 +77,10 @@ router.route('/login')
 			}
 			else{
 				if(resultFind.length == 1){
-					res.json(resultFind[0]);
+					model.user.getContactsByIds(resultFind[0].contacts, function(contacts){
+						resultFind[0].contacts = contacts;
+						res.json(resultFind[0]);
+					});
 				} else {
 					res.status(401).json({message: "Username and/or password incorrect"});
 				}

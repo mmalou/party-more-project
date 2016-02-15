@@ -14,7 +14,9 @@ angular.module('starter', ['ionic',
   'LoginService',
   'ContactController',
   'ContactService',
-  'ngStorage'
+  'ngStorage',
+  'ionic-datepicker',
+  'ionic-timepicker'
 ])
 
 .run(function($ionicPlatform) {
@@ -36,14 +38,14 @@ angular.module('starter', ['ionic',
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'MenuCtrl'
   })
 
-  .state('app.signup', {
+  .state('login.signup', {
     url: '/signup',
     views: {
       'menuContent': {
@@ -53,8 +55,8 @@ angular.module('starter', ['ionic',
     }
   })
   
-  .state('app.browseEvents', {
-    url: '/browseEvents',
+  .state('app.events', {
+    url: '/events',
     views: {
       'menuContent': {
         templateUrl: 'templates/browseEvents.html',
@@ -63,14 +65,10 @@ angular.module('starter', ['ionic',
     }
   })
   
-  .state('app.login', {
+  .state('login', {
     url: '/login',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/login.html',
-        controller: 'LoginCtrl'
-      }
-    }
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
   })
   
   .state('app.contact', {
@@ -84,5 +82,5 @@ angular.module('starter', ['ionic',
   })
   
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/login');
+  $urlRouterProvider.otherwise('/login');
 });

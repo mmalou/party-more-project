@@ -9,8 +9,8 @@
         </button>
       </ion-nav-buttons>
       <ion-nav-buttons side="right">
-        <button class="button button-icon ion-plus-round" ng-click="openEventAddModal()" ng-hide='true'>
-        <button class="button button-icon ion-plus-round" ng-click="openContactAddModal()" ng-hide='false'>
+        <button class="button button-icon ion-plus-round" ng-click="openEventAddModal()" ng-hide='false'>
+        <button class="button button-icon ion-plus-round" ng-click="openContactAddModal()" ng-hide='true'>
       </button>
       </ion-nav-buttons>
     </ion-nav-bar>
@@ -23,17 +23,14 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-         <ion-item menu-close class='menu-item' href="#/app/login">
-          Login
+		    <ion-item menu-close class='menu-item' href="#/app/events">
+          Events
         </ion-item>
-	    <ion-item menu-close class='menu-item' href="#/app/signup">
-          Inscription
+        <ion-item menu-close class='menu-item' href="#/app/contact">
+          Contacts
         </ion-item>
-		<ion-item menu-close class='menu-item' href="#/app/browseEvents">
-          Browse Events
-        </ion-item>
-	   <ion-item menu-close class='menu-item' href="#/app/contact">
-          Contact
+        <ion-item menu-close class='menu-item' ng-click='disconnect()'>
+          Déconnexion
         </ion-item>
       </ion-list>
     </ion-content>

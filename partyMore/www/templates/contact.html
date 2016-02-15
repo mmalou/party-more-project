@@ -1,7 +1,9 @@
 <ion-view view-title="Contact">
   <ion-content>
-	<a class="button" href="#/app/addcontact">Add a contact</a>
-	
-
+	<ion-list>
+	  <ion-item ng-repeat="contact in contacts">
+		{{contact.user.username}}
+	  </ion-item>
+	</ion-list>
   </ion-content>
 </ion-view>

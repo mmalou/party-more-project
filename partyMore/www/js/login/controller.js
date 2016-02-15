@@ -2,9 +2,10 @@ angular.module('LoginController', [])
 .controller('LoginCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, $state, SignupSrv, LoginSrv) {
 	
 	$scope.loginData = {
-		username : "",
-		password : ""
+		username : "julien",
+		password : "azerty"
 	};
+
 	
 	$scope.doLogin = function() {
 		
@@ -22,7 +23,7 @@ angular.module('LoginController', [])
 		if (isValidForm($scope.validationSignin)) {
 			LoginSrv.isAuthenticate($scope.loginData).success(function(data) {
 				$localStorage.user = data;
-				$state.go('app.browseEvents');
+				$state.go('app.events');
 			}).error(function(data){
 				var alertPopup = $ionicPopup.alert({
 			     	title: 'Error !',
