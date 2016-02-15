@@ -1,0 +1,45 @@
+<ion-modal-view>
+  <ion-header-bar class='bar-positive'>
+    <h1 class="title">Signup</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeSignupModal()"><i class="icon ion-close"></i></button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form name="signupForm" ng-submit="doInscription()">
+      <div class="list list-insert">
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Username</span>
+			<input name="username" type="text" placeholder="Username" ng-model="inscriptionData.username">
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Email</span>
+			<input type="text" placeholder="Email" ng-model="inscriptionData.mail">
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Password</span>
+			<input type="password" placeholder="Password" ng-model="inscriptionData.password">
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Password verification</span>
+			<input type="password" placeholder="Password" ng-model="inscriptionData.passwordVerification">
+		</label>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">S'inscrire</button>
+        </label>
+		<span style="color:red;" ng-show="validation.usernameRequired">Username required</span></br>
+		<span style="color:red;" ng-show="validation.usernameInvalid">Username invalid</span></br>
+		<span style="color:red;" ng-show="validation.usernameExists">Username already exists</span></br>
+		
+		<span style="color:red;" ng-show="validation.emailExists">Email already exists</span>
+		<span style="color:red;" ng-show="validation.emailRequired">Email required</span></br>
+		<span style="color:red;" ng-show="validation.emailInvalid">Email invalid</span></br>
+		
+		<span style="color:red;" ng-show="validation.passwordRequired">Password required</span></br>
+		<span style="color:red;" ng-show="validation.passwordDifferent">Passwords not identicals</span></br>
+		<span style="color:red;" ng-show="validation.passwordShort">Password < 6 chars</span></br>
+		
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

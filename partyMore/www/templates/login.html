@@ -1,29 +1,30 @@
-<ion-view view-title="Login">
-  <ion-content>
-    <form ng-submit="doLogin()">
-      <div class="list list-insert">
+<!-- (*) assigned classes -->
 
-		<label class="item item-input item-stacked-label">
-			<span class="input-label">Username</span>
-			<input type="text" placeholder="Username" ng-model="loginData.username" name="username">
-		</label>
-		<label class="item item-input item-stacked-label">
-			<span class="input-label">Password</span>
-			<input type="password" placeholder="Password" ng-model="loginData.password">
-		</label>
-		<label class="item">
-			<button class="button button-block button-positive" type="submit">Login</button>
-		</label>
-      </div>
-    </form>
-
-    <button class="button button-block button-positive" type="button" ng-click='openSignupModal()'>Signup</button>
-    
-    <ul id="errors">
-	<li ng-show="validation.usernameRequired">Username required</li>
-	<li ng-show="validation.passwordRequired">Password required</li>
-	<li ng-show="validation.usernameNoExist">Username doesn't exist</li>
-	<li ng-show="validation.passwordIncorrect">Password incorrect</li>
-    </ul>
-  </ion-content>
-</ion-view>
+<!-- *class view-login / background color -->
+<ion-modal-view class="view-login">
+  	<ion-content>
+	  	<!-- *class logo / logo company or app -->
+	  	<div class="logo">
+	  		<img ng-src="img/logo.png" alt="Company">
+	  	</div>
+	  	<!-- form login with button sing in and facebook login style -->
+		<form ng-submit="doLogin()">
+		  	<div class="list list-inset">
+				<label class="item item-input">
+				<input type="text" placeholder="Username" ng-model="loginData.username">
+				</label>
+				<label class="item item-input">
+				<input type="password" placeholder="........." ng-model="loginData.password">
+				</label>
+				<button class="button button-block button-assertive">
+		  			SING IN
+				</button>
+				<!-- <span>-or-</span>
+				<button class="button button-block button-outline button-assertive">
+					Facebook
+				</button> -->
+				<a href="#" ng-click='openSignupModal()'>Create Acount</a>
+			</div>
+		</form>
+  	</ion-content>
+</ion-modal-view>

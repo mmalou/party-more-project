@@ -4,83 +4,91 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 
-  'MenuController',
-  'SignupController',
-  'SignupService',
-  'EventsController',
-  'EventsService',
-  'LoginController',
-  'LoginService',
-  'ContactController',
-  'ContactService',
-  'ngStorage',
-  'ionic-datepicker',
-  'ionic-timepicker'
+angular.module('starter', ['ionic', 'starter.controllers',
+	'MenuController',
+	'SignupController',
+	'SignupService',
+	'EventsController',
+	'EventsService',
+	'LoginController',
+	'LoginService',
+	'ContactController',
+	'ContactService',
+	'ProfileController',
+	'ngStorage',
+	'ionic-datepicker',
+	'ionic-timepicker'
 ])
 
 .run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
+  	$ionicPlatform.ready(function() {
+		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+		// for form inputs)
+		if (window.cordova && window.cordova.plugins.Keyboard) {
+		  	cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+		}
+		if (window.StatusBar) {
+		  	// org.apache.cordova.statusbar required
+		  	StatusBar.styleDefault();
+		}
+  	});
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+	$ionicConfigProvider.navBar.alignTitle('center');
+  	$stateProvider
 
-  .state('app', {
-    url: '/app',
-    abstract: true,
-    templateUrl: 'templates/menu.html',
-    controller: 'MenuCtrl'
-  })
+  	.state('login', {
+	    url: '/login',
+	    templateUrl: 'templates/login.html',
+	    controller: 'LoginCtrl'
+	})
 
-  .state('login.signup', {
-    url: '/signup',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/signup.html',
-        controller: 'SignupCtrl'
-      }
-    }
-  })
-  
-  .state('app.events', {
-    url: '/events',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/browseEvents.html',
-        controller: 'EventsCtrl'
-      }
-    }
-  })
-  
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: 'LoginCtrl'
-  })
-  
-  .state('app.contact', {
-    url: '/contact',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/contact.html',
-        controller: 'ContactCtrl'
-      }
-    }
-  })
-  
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  	.state('app', {
+		url: "/app",
+		abstract: true,
+		templateUrl: "templates/menu.html",
+		controller: 'AppCtrl'
+  	})
+
+  	.state('app.events', {
+		url: "/events",
+		views: {
+			'menuContent': {
+				templateUrl: "templates/news-feed.html",
+				controller: 'EventsCtrl'
+	  		}
+		}
+ 	})
+
+  	.state('app.profile', {
+		url: "/profile",
+		views: {
+	  		'menuContent': {
+				templateUrl: "templates/profile.html",
+				controller: "ProfileCtrl"
+	  		}
+		}
+  	})
+	.state('app.followers', {
+		url: "/followers",
+	  	views: {
+			'menuContent': {
+		 		templateUrl: "templates/followers.html"
+			}
+	  	}
+	})
+	.state('app.contacts', {
+		url: "/contacts",
+	  	views: {
+			'menuContent': {
+		 		templateUrl: "templates/listUsers.html",
+		 		controller: 'ContactCtrl'
+			}
+	  	}
+	});
+
+  	// if none of the above states are matched, use this as the fallback
+  	$urlRouterProvider.otherwise('/login');
+
 });

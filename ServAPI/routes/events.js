@@ -1,4 +1,5 @@
 var express 		= require('express');
+var async 			= require('async');
 var router 			= express.Router();
 
 var model 		= require(__dirname +"/../models/index.js");
@@ -73,7 +74,14 @@ router.route('/')
 			});
 		} else {
 			model.event.findByStatus("public", function(resultFind){
-				res.json(resultFind);
+				async.each(resultFind, function(event, callback){
+					model.user.findById(event.creator, function(user){
+						event.creator = user.username;
+						callback();
+					});
+				},function(err){
+					res.json(resultFind);
+				});
 			});
 		}
 	});

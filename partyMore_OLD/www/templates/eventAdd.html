@@ -1,0 +1,71 @@
+<ion-modal-view>
+  <ion-header-bar class='bar-positive'>
+    <h1 class="title">Add an event</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeEventAddModal()"><i class="icon ion-close"></i></button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form name="signupForm">
+      <div class="list list-insert">
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Name</span>
+			<input name="name" type="text" placeholder="Name" ng-model="formData.name">
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Description</span>
+			<input name="description" type="text" placeholder="Description" ng-model="formData.description">
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Category</span>
+			<input name="category" type="text" placeholder="Category" ng-model="formData.category">
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Date</span>
+			<span>{{formData.date}}</span>
+			<div>
+				<ionic-datepicker input-obj="datepickerObject">
+			  		<button class="button button-block button-positive">Select</button>
+				</ionic-datepicker>
+			</div>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Hour</span>
+			<span>{{formData.hour}}</span>
+			<!-- <input name="hour" type="text" placeholder="Hour" ng-model="formData.hour"> -->
+			<div>
+				<ionic-timepicker input-obj="timePickerObject">
+				  <button class="button button-block button-positive overflowShow">
+				  	Select
+				    <standard-time-meridian etime='timePickerObject.inputEpochTime'></standard-time-meridian>
+				  </button>
+				</ionic-timepicker>
+			</div>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Location</span>
+			<input name="location" type="text" placeholder="Location" ng-model="formData.location">
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Status</span>
+			<input name="status" type="text" placeholder="Status" ng-model="formData.status">
+		</label>
+        <label class="item">
+          <button class="button button-block button-balanced" type="button" ng-click="doAddEvent()">Valider</button>
+        </label>
+		<!--span style="color:red;" ng-show="validation.usernameRequired">Username required</span></br>
+		<span style="color:red;" ng-show="validation.usernameInvalid">Username invalid</span></br>
+		<span style="color:red;" ng-show="validation.usernameExists">Username already exists</span></br>
+		
+		<span style="color:red;" ng-show="validation.emailExists">Email already exists</span>
+		<span style="color:red;" ng-show="validation.emailRequired">Email required</span></br>
+		<span style="color:red;" ng-show="validation.emailInvalid">Email invalid</span></br>
+		
+		<span style="color:red;" ng-show="validation.passwordRequired">Password required</span></br>
+		<span style="color:red;" ng-show="validation.passwordDifferent">Passwords not identicals</span></br>
+		<span style="color:red;" ng-show="validation.passwordShort">Password < 6 chars</span></br-->
+		
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

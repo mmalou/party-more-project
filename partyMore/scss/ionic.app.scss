@@ -15,9 +15,28 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
+@import "ionsunset/variables";  // import variables colors
+
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+// Include ionSunset Theme
+@import "ionsunset/ionsunset"; // imports everything other than variables
+
+.contact-list .item-avatar {
+	h2 {
+		position: absolute;
+		top: 25px;
+	}
+
+	.icon-view.ion-more {
+		color: #CCC;
+	}
+
+	.icon.ion-ios-trash-outline{
+		//color: $assertive;
+	}
+}
