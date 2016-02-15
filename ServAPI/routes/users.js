@@ -20,6 +20,34 @@ router.route('/:iduser')
 	    });
 	})
 
+	.put(function(req, res){
+		var id = req.params.iduser;
+
+	    if(req.query.action == "addContact"){
+	    	var username = req.body.username;
+			model.user.findByUsername(username, function(resultFind){
+				if(resultFind.length && resultFind[0].id != id){
+					var contactId = resultFind[0].id;
+					model.user.findContactById(id, contactId, function(resultFind){
+						if(!resultFind){
+					    	model.user.addContactById(id, contactId, function(resultAdd){
+					    		model.user.addContactById(contactId, id, function(resultAdd){
+					    			res.json({message: "Contact added"});
+					    		});
+					    	});
+					    } else {
+					    	res.status(409).json({message: "Contact already added"});
+					    }
+				    });
+			    } else {
+			    	res.status(404).json({message: "User not found"});
+			    }
+	    	});
+	    } else {
+	    	res.json({contorl:true});
+	    }
+	})
+
 	.delete(function(req, res) {
 		model.user.removeById(req.params.iduser, function(resultFind){
 			if(resultFind == "error" || resultFind == null){

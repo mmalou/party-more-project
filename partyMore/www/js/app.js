@@ -14,8 +14,6 @@ angular.module('starter', ['ionic',
   'LoginService',
   'ContactController',
   'ContactService',
-  'AddcontactController',
-  'AddcontactService',
   'ngStorage'
 ])
 
@@ -84,16 +82,6 @@ angular.module('starter', ['ionic',
       }
     }
   })
-  
-   .state('app.addcontact', {
-    url: '/addcontact',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/addcontact.html',
-        controller: 'AddcontactCtrl'
-      }
-    }
-  });
   
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/login');

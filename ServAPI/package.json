@@ -21,6 +21,7 @@
   "homepage": "https://github.com/mmalou/party-more-project",
   "dependencies": {
     "assert": "^1.3.0",
+    "async": "^1.5.2",
     "body-parser": "^1.14.1",
     "cors": "^2.7.1",
     "express": "^4.13.3",
