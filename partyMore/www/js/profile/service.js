@@ -1,7 +1,7 @@
-angular.module('ProfileService', []).factory('ProfileSrv', function($http) {
+angular.module('ProfileService', []).factory('ProfileSrv', function($http, APIUrl) {
     return {
 		getUserById : function(id, formData) {
-			return $http.get("http://localhost:8081/users/"+id);
+			return $http.get(APIUrl+"/users/"+id);
 		},
     };       
 });

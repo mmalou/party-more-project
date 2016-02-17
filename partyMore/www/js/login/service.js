@@ -1,8 +1,8 @@
-angular.module('LoginService', []).factory('LoginSrv', function($http) {
+angular.module('LoginService', []).factory('LoginSrv', function($http, APIUrl) {
     return {
 
 		isAuthenticate : function(formData) {
-			return $http.post("http://localhost:8081/users/login", formData);
+			return $http.post(APIUrl+"/users/login", formData);
 		}
 
     };       
