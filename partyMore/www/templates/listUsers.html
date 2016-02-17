@@ -5,6 +5,10 @@
         <button class="button button-icon icon ion-ios-plus-empty" ng-click="openContactAddModal()"></button>
     </ion-nav-buttons>
 	<ion-content>
+        <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="doRefresh()">
+        </ion-refresher>
         <!-- *class input-search -->
 		<!-- <div class="list list-inset input-search">
 			<label class="item item-input">

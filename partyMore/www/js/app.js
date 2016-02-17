@@ -15,12 +15,13 @@ angular.module('starter', ['ionic', 'starter.controllers',
 	'ContactController',
 	'ContactService',
 	'ProfileController',
+	'ProfileService',
 	'ngStorage',
 	'ionic-datepicker',
 	'ionic-timepicker'
 ])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $ionicLoading, $ionicPopup) {
   	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -31,6 +32,23 @@ angular.module('starter', ['ionic', 'starter.controllers',
 		  	// org.apache.cordova.statusbar required
 		  	StatusBar.styleDefault();
 		}
+
+		$rootScope.$on("loading:show",function(){
+	      $ionicLoading.show({
+	          template: '<ion-spinner icon="crescent"></ion-spinner>'
+	      });
+	    });
+
+	    $rootScope.$on("loading:hide",function(){
+	      $ionicLoading.hide();
+	    });
+
+	    $rootScope.$on("connectionError",function(){
+	      $ionicPopup.alert({
+	        title: "Network error",
+	        template: "Please check your network connection."
+	      });
+	    });
   	});
 })
 
@@ -40,7 +58,24 @@ angular.module('starter', ['ionic', 'starter.controllers',
     };
 }])
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider) {
+
+	  $httpProvider.interceptors.push(['$q', '$rootScope', function($q, $rootScope) {
+	    return {
+	        'request': function (config) {
+
+	          var isIonicUrl = config.url.indexOf("ionic") == -1 ? false : true;
+	          if (!isIonicUrl) {
+	          $rootScope.$broadcast("loading:show");
+	          }
+	          return config;
+	        },
+	        'response': function (response) {
+	          $rootScope.$broadcast("loading:hide");
+	          return response;
+	        }
+	    };
+	  }]);
 	$ionicConfigProvider.navBar.alignTitle('center');
   	$stateProvider
 

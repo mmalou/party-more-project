@@ -1,6 +1,13 @@
 angular.module('ContactController', [])
-.controller('ContactCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, ContactSrv) {
+.controller('ContactCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, $rootScope, ContactSrv, ProfileSrv) {
 	$scope.contacts = $localStorage.user.contacts;
+
+  $scope.doRefresh = function(){
+    ProfileSrv.getUserById($localStorage.user._id).success(function(user){
+      $scope.contacts = user.contacts;
+      $scope.$broadcast('scroll.refreshComplete');
+    });
+  };
 
 	//ADD CONTACT
   $ionicModal.fromTemplateUrl('templates/contactAdd.html', {
@@ -37,6 +44,7 @@ angular.module('ContactController', [])
 
   $scope.doAddContact = function() {
       ContactSrv.addContactByUsername($localStorage.user._id, $scope.formDataAddContact).success(function(data){
+          $scope.contacts.push({user: {username: $scope.formDataAddContact.username}, status: "pending"});
 
           var alertPopup = $ionicPopup.alert({
             title: data.message,
@@ -54,6 +62,7 @@ angular.module('ContactController', [])
           });
 
       }).error(function(data){
+        $rootScope.$broadcast("loading:hide");
 
           var alertPopup = $ionicPopup.alert({
             title: data.message,
@@ -74,8 +83,9 @@ angular.module('ContactController', [])
   };
   $scope.deleteContact = function(contactId){
     ContactSrv.removeContactById($localStorage.user._id, contactId).success(function(data){
-        console.log(data);
-        $scope.contacts = $localStorage.user.contacts;
+      ProfileSrv.getUserById($localStorage.user._id).success(function(user){
+        $scope.contacts = user.contacts;
+      });
     });
   };
 })

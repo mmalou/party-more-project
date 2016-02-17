@@ -9,7 +9,7 @@ router.route('/:idEvent/users')
 
 		var id 		= req.params.idEvent;
 		var userId 	= req.body.userId;
-		
+
 		model.event.addUserById(id, userId, function(resultAdd){
 			if (resultAdd == "error") {
 				res.statusCode = 500;
@@ -113,7 +113,14 @@ router.route('/')
 								callback();
 							});
 						},function(err){
-							callback();
+							async.each(event.users, function(userId, callback){
+								model.user.findById(userId, function(user){
+									event.users[event.users.indexOf(userId)] = user.username;
+									callback();
+								});
+							},function(err){
+								callback();
+							});
 						});
 					});
 				},function(err){

@@ -120,7 +120,16 @@ module.exports = {
 	        function(err, doc){
 	            if (err) 
 			        return callback("error");
-			    return callback("done");
+
+			    User.update(
+			        {_id : mongoose.Types.ObjectId(p_contactId)},
+			        {$pull: {contacts : {_id : p_userId}}},
+			        function(err, doc){
+			            if (err) 
+					        return callback("error");
+					    return callback("done");
+			        }
+			    );
 	        }
 	    ); 
 	}

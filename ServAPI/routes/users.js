@@ -15,7 +15,10 @@ router.route('/:iduser')
 			else{
 				res.statusCode = 200;
 				res.header("Cache-Control", "public, max-age=1209600");
-				res.send(resultFind);
+				model.user.getContactsByIds(resultFind.contacts, function(contacts){
+					resultFind.contacts = contacts;
+					res.json(resultFind);
+				});
 			} 
 	    });
 	})

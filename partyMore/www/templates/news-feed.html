@@ -5,11 +5,15 @@
         <button class="button button-icon icon ion-ios-plus-empty" ng-click="openEventAddModal()"></button>
     </ion-nav-buttons>
 	<ion-content>
+		<ion-refresher
+	    	pulling-text="Pull to refresh..."
+	    	on-refresh="doRefresh()">
+	  	</ion-refresher>
 		<!-- list card -->
 		<div class="list card" ng-repeat="event in events" ng-click='showDetails(event._id)'>
 		
 			<div class="item item-avatar item-icon-right">
-				<img src="img/48.jpg">
+				<img src="img/27.jpg">
 				<h2>{{event.creator}}</h2>
 				<!-- *class social / favorites and comments -->
 				<p class="social-img-up">
@@ -19,6 +23,10 @@
 			    	</a> -->
 			    	<a ng-show='userIsParticipate(event.users)'>
 			      		<i class="icon ion-checkmark"></i>
+	    			</a>
+	    			<a>
+			      		<i class="icon ion-person-stalker"></i>
+			      		{{event.users.length}}
 	    			</a>
 			      	<a>
 			      		<i class="icon ion-ios-chatbubble-outline"></i>

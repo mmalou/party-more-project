@@ -3,9 +3,13 @@ angular.module('EventsController', [])
 	
 	$scope.events = [];
 
-	/*EventsSrv.listByUserId($localStorage.user._id).success(function(events){
-		$scope.events = events;
-	});*/
+	$scope.doRefresh = function(){
+		EventsSrv.listPublic().success(function(events){
+			$scope.events = events;
+			EventsSrv.setCachedEvents(events);
+			$scope.$broadcast('scroll.refreshComplete');
+		});
+	};
 
 	EventsSrv.listPublic().success(function(events){
 		$scope.events = events;
@@ -17,7 +21,7 @@ angular.module('EventsController', [])
 	};
 
 	$scope.userIsParticipate = function(users){
-		return (users.indexOf($localStorage.user._id) !== -1);
+		return (users.indexOf($localStorage.user.username) !== -1);
 	}
 
 
@@ -142,7 +146,7 @@ angular.module('EventsController', [])
 	$scope.event = event;
 	console.log(event);
 
-	$scope.participate = ($scope.event.users.indexOf($localStorage.user._id) == -1) ? false : true;
+	$scope.participate = ($scope.event.users.indexOf($localStorage.user.username) == -1) ? false : true;
 
 	$scope.formData = {
 		userId: $localStorage.user._id,
@@ -151,6 +155,7 @@ angular.module('EventsController', [])
 
 	$scope.doAddComment = function() {
 		EventsSrv.addComment($scope.event._id, $scope.formData).success(function(data){
+			$scope.event.comments.push({userId: $localStorage.user, text: $scope.formData.comment});
 			$scope.formData = {
 				userId: $localStorage.user._id,
 				comment: ""
@@ -161,6 +166,7 @@ angular.module('EventsController', [])
 	$scope.addUserToEvent = function(){
 		EventsSrv.addUserToEvent($scope.event._id, $localStorage.user._id).success(function(data){
 			$scope.participate = true;
+			$scope.event.users.push($localStorage.user.username);
 		});
 	}
 });

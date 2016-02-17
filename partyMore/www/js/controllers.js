@@ -75,11 +75,3 @@ angular.module('starter.controllers', [])
 		});
 	};
 })
-
-.controller('MenuActiveCtrl', function($scope, $location, $localStorage) {
-	$scope.user = $localStorage.user;
-	
-    $scope.isActive = function(route) {
-        return route === $location.path();
-    };
-});

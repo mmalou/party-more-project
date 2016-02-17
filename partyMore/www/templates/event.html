@@ -3,7 +3,7 @@
 		<div class="list card">
 
 		  <div class="item item-avatar">
-		    <img src="img/48.jpg">
+		    <img src="img/27.jpg">
 		    <h2>{{event.creator}}</h2>
 		    <p>
 		    	<i class="icon ion-ios-clock-outline"></i>
@@ -17,6 +17,14 @@
 		    <p>
 		      {{event.description}}
 		    </p>
+		    <hr>
+		    <h2>Participants</h2>
+		    <div class='comment'>
+		    	<ul ng-show='event.users.length'>
+		    		<li ng-repeat='user in event.users'><i class="icon ion-arrow-right-b"></i> {{user}}</li>
+		    	</ul>
+		    	<p ng-hide='event.users.length'>No participants</p>
+		    </div>
 		    <hr>
 		    <h2>Comments</h2>
 		    <div class='comment' ng-repeat='comment in event.comments'>
