@@ -1,5 +1,5 @@
 angular.module('EventsController', [])
-.controller('EventsCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, EventsSrv) {
+.controller('EventsCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, $state, EventsSrv) {
 	
 	$scope.events = [];
 
@@ -8,9 +8,14 @@ angular.module('EventsController', [])
 	});*/
 
 	EventsSrv.listPublic().success(function(events){
-		console.log(events);
 		$scope.events = events;
+		EventsSrv.setCachedEvents(events);
 	});
+
+	$scope.showDetails = function(id) {
+		$state.go('app.event', {id: id});
+	};
+
 
 	//ADD EVENT
 	  $ionicModal.fromTemplateUrl('templates/eventAdd.html', {
@@ -46,14 +51,14 @@ angular.module('EventsController', [])
 	        $scope.formData.date = Math.floor(val.getTime() / 1000);
 	      }
 	    },
-	    dateFormat: 'dd-MM-yyyy', //Optional
+	    dateFormat: 'MM-dd-yyyy', //Optional
 	    closeOnSelect: false, //Optional
 	  };
 
 	  $scope.timePickerObject = {
 	    inputEpochTime: ((new Date()).getHours() * 60 * 60),  //Optional
 	    step: 15,  //Optional
-	    format: 24,  //Optional
+	    format: 12,  //Optional
 	    titleLabel: 'Select an hour',  //Optional
 	    setLabel: 'Set',  //Optional
 	    closeLabel: 'Close',  //Optional
@@ -110,7 +115,7 @@ angular.module('EventsController', [])
 	      EventsSrv.add($scope.formData).success(function(data){
 
 	          var alertPopup = $ionicPopup.alert({
-	            title: 'Evenement ajouté !',
+	            title: 'Event added !',
 	            //template: 'Go to login and sign in.',
 	            buttons: [
 	              {
@@ -127,4 +132,24 @@ angular.module('EventsController', [])
 	      });
 	  };
 
+})
+
+.controller('EventCtrl', function(event, $scope, $localStorage, $ionicModal, $ionicPopup, EventsSrv) {
+	$scope.event = event;
+	console.log(event);
+
+	$scope.formData = {
+		userId: $localStorage.user._id,
+		comment: ""
+	}
+
+	$scope.doAddComment = function() {
+		EventsSrv.addComment($scope.event._id, $scope.formData).success(function(data){
+			console.log(data);
+			$scope.formData = {
+				userId: $localStorage.user._id,
+				comment: ""
+			}
+		});
+	};
 });

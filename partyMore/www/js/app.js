@@ -34,6 +34,12 @@ angular.module('starter', ['ionic', 'starter.controllers',
   	});
 })
 
+.filter('secondsToDateTime', [function() {
+    return function(seconds) {
+        return new Date(1970, 0, 1).setSeconds(seconds);
+    };
+}])
+
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 	$ionicConfigProvider.navBar.alignTitle('center');
   	$stateProvider
@@ -60,6 +66,21 @@ angular.module('starter', ['ionic', 'starter.controllers',
 	  		}
 		}
  	})
+
+ 	.state('app.event', {
+	    url: '/events/:id',
+	    views: {
+	  		'menuContent': {
+				controller: 'EventCtrl',
+	    		templateUrl: 'templates/event.html',
+	    		resolve: {
+		        	event: function($stateParams, EventsSrv) {
+		          		return EventsSrv.getEvent($stateParams.id);
+		        	}
+		        }
+	  		}
+		}
+	})
 
   	.state('app.profile', {
 		url: "/profile",
