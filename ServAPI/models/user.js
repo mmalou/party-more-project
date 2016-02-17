@@ -112,5 +112,16 @@ module.exports = {
 		} else {
 			return callback(p_contacts);
 		}
+	},
+	removeContactById : function(p_userId, p_contactId, callback){
+	    User.update(
+	        {_id : mongoose.Types.ObjectId(p_userId)},
+	        {$pull: {contacts : {_id : p_contactId}}},
+	        function(err, doc){
+	            if (err) 
+			        return callback("error");
+			    return callback("done");
+	        }
+	    ); 
 	}
 };

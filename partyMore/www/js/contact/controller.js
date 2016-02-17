@@ -70,7 +70,13 @@ angular.module('ContactController', [])
             $scope.closeContactAddModal();
           });
 
-      });;
+      });
+  };
+  $scope.deleteContact = function(contactId){
+    ContactSrv.removeContactById($localStorage.user._id, contactId).success(function(data){
+        console.log(data);
+        $scope.contacts = $localStorage.user.contacts;
+    });
   };
 })
 

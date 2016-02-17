@@ -43,8 +43,19 @@ router.route('/:iduser')
 			    	res.status(404).json({message: "User not found"});
 			    }
 	    	});
+	    } else if (req.query.action == "removeContact"){
+	        var contactId = req.body.contactId;
+	        model.user.removeContactById(id, contactId, function(result){
+	            if (result == "error"){
+	                console.log("error when removing contact");
+	                res.status(501).json({message: "An unexpected error has occured"});
+	            } else{
+	                console.log("contact removed");
+	                res.status(204).json({message: "Contact removed successfully"});
+	            }
+	        });
 	    } else {
-	    	res.json({contorl:true});
+	    	res.json({control:true});
 	    }
 	})
 
