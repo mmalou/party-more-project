@@ -19,6 +19,9 @@ angular.module('EventsService', []).factory('EventsSrv', function($http, $q) {
         addComment: function(id, datas) {
             return $http.put("http://localhost:8081/events/"+id, datas);
         },
+        addUserToEvent: function(id, userId) {
+            return $http.post("http://localhost:8081/events/"+id+"/users", {userId: userId});
+        },
         setCachedEvents : function(data) {
             this.events = data;
         },

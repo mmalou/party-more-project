@@ -4,6 +4,23 @@ var router 			= express.Router();
 
 var model 		= require(__dirname +"/../models/index.js");
 
+router.route('/:idEvent/users')
+	.post(function(req, res) {
+
+		var id 		= req.params.idEvent;
+		var userId 	= req.body.userId;
+		
+		model.event.addUserById(id, userId, function(resultAdd){
+			if (resultAdd == "error") {
+				res.statusCode = 500;
+				res.send();
+			}
+			else {
+				res.status(201).json(resultAdd);
+			}
+		});
+	});
+
 //retourne un event d'après son id
 router.route('/:idevent')
 	.get(function(req, res){

@@ -16,6 +16,10 @@ angular.module('EventsController', [])
 		$state.go('app.event', {id: id});
 	};
 
+	$scope.userIsParticipate = function(users){
+		return (users.indexOf($localStorage.user._id) !== -1);
+	}
+
 
 	//ADD EVENT
 	  $ionicModal.fromTemplateUrl('templates/eventAdd.html', {
@@ -138,6 +142,8 @@ angular.module('EventsController', [])
 	$scope.event = event;
 	console.log(event);
 
+	$scope.participate = ($scope.event.users.indexOf($localStorage.user._id) == -1) ? false : true;
+
 	$scope.formData = {
 		userId: $localStorage.user._id,
 		comment: ""
@@ -145,11 +151,16 @@ angular.module('EventsController', [])
 
 	$scope.doAddComment = function() {
 		EventsSrv.addComment($scope.event._id, $scope.formData).success(function(data){
-			console.log(data);
 			$scope.formData = {
 				userId: $localStorage.user._id,
 				comment: ""
 			}
 		});
 	};
+
+	$scope.addUserToEvent = function(){
+		EventsSrv.addUserToEvent($scope.event._id, $localStorage.user._id).success(function(data){
+			$scope.participate = true;
+		});
+	}
 });

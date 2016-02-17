@@ -39,4 +39,8 @@
 
 		</div>
 	</ion-content>
+	<ion-footer-bar align-title="center" class="bar-assertive" ng-click='addUserToEvent()'>
+  		<span ng-hide='participate'><h1 class="title">I'm in !</h1></span>
+  		<span ng-show='participate'><h1 class="title"><i class='icon ion-checkmark'></i></h1></span>
+	</ion-footer-bar>
 </ion-view>

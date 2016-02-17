@@ -11,7 +11,7 @@ var schema_event = Schema({
 	description: 	{type: String, 		default: null},
 	location: 		{type: String, 		default: null},
 	status: 		{type: String, 		default: "private"},
-	users: 			{type: [String],  	default: [] },
+	users: 			{type: [],  		default: [] },
 	comments: 		{type: [],			default: [] }}, 
 	{ versionKey: false }
 );
@@ -72,6 +72,18 @@ module.exports = {
 		Event.update(
 			{_id : mongoose.Types.ObjectId(p_id)},
 			{ $push: {comments : {_id: mongoose.Types.ObjectId(), text: p_comment, userId: p_userId}}},
+			function(err, doc) {
+				
+			if (err) 
+				return callback("error");
+
+			return callback(doc);
+		});
+	},
+	addUserById: function(p_id, p_userId, callback) {
+		Event.update(
+			{_id : mongoose.Types.ObjectId(p_id)},
+			{ $addToSet: {users : p_userId}},
 			function(err, doc) {
 				
 			if (err) 
