@@ -22,7 +22,7 @@
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Date</span>
-			<span>{{formData.date}}</span>
+			<span ng-hide="formData.date*1000 == 0">{{formData.date*1000 | date:"MM/dd/yyyy"}}</span>
 			<div>
 				<ionic-datepicker input-obj="datepickerObject">
 			  		<button class="button button-block button-positive">Select</button>
@@ -31,7 +31,7 @@
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Hour</span>
-			<span>{{formData.hour}}</span>
+			<span ng-hide="formData.hour == 0">{{formData.hour | secondsToDateTime | date:"h:mma"}}</span>
 			<!-- <input name="hour" type="text" placeholder="Hour" ng-model="formData.hour"> -->
 			<div>
 				<ionic-timepicker input-obj="timePickerObject">
@@ -48,10 +48,17 @@
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Status</span>
-			<input name="status" type="text" placeholder="Status" ng-model="formData.status">
+			<div class="row">
+	            <div class="col col-50">
+	              <ion-radio ng-model="formData.status" ng-value="'public'">Public</ion-radio>
+	            </div>
+	            <div class="col col-50">
+	              <ion-radio ng-model="formData.status" ng-value="'private'">Private</ion-radio>
+	            </div>
+          </div>
 		</label>
         <label class="item">
-          <button class="button button-block button-balanced" type="button" ng-click="doAddEvent()">Valider</button>
+          <button class="button button-block button-balanced" type="button" ng-click="doAddEvent()">Submit</button>
         </label>
 		<!--span style="color:red;" ng-show="validation.usernameRequired">Username required</span></br>
 		<span style="color:red;" ng-show="validation.usernameInvalid">Username invalid</span></br>

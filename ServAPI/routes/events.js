@@ -36,6 +36,19 @@ router.route('/:idevent')
 				res.send(resultFind);
 			}
 		});
+	})
+
+	.put(function(req, res){
+		var idEvent = req.params.idevent;
+		var comment = req.body.comment;
+		var userId = req.body.userId;
+
+		console.log(comment);
+		console.log(userId);
+
+		model.event.addCommentById(idEvent, userId, comment, function(resultAdd){
+			res.status(201).json({message: "Comment added"});
+		});
 	});
 
 router.route('/')
@@ -77,7 +90,14 @@ router.route('/')
 				async.each(resultFind, function(event, callback){
 					model.user.findById(event.creator, function(user){
 						event.creator = user.username;
-						callback();
+						async.each(event.comments, function(comment, callback){
+							model.user.findById(comment.userId, function(user){
+								comment.userId = user;
+								callback();
+							});
+						},function(err){
+							callback();
+						});
 					});
 				},function(err){
 					res.json(resultFind);

@@ -40,3 +40,22 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 		//color: $assertive;
 	}
 }
+
+.item-stacked-label > div {
+	padding-right: 8px;
+}
+
+.comment {
+	p {
+		&.author {
+			font-weight: bold;
+		}
+
+		&.citation {
+			font-style: italic;
+		}
+		margin: 0;
+	}
+
+	margin-bottom: 15px;
+}

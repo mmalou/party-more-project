@@ -1,5 +1,5 @@
 angular.module('ContactController', [])
-.controller('ContactCtrl', function($scope, $localStorage, $ionicModal, ContactSrv) {
+.controller('ContactCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, ContactSrv) {
 	$scope.contacts = $localStorage.user.contacts;
 
 	//ADD CONTACT
@@ -67,7 +67,7 @@ angular.module('ContactController', [])
           });
 
           alertPopup.then(function(res) {
-            $scope.closeContactAddModal();
+            $scope.formDataAddContact.username = "";
           });
 
       });

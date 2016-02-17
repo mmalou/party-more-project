@@ -11,7 +11,8 @@ var schema_event = Schema({
 	description: 	{type: String, 		default: null},
 	location: 		{type: String, 		default: null},
 	status: 		{type: String, 		default: "private"},
-	users: 			{type: [String],  	default: [] }},
+	users: 			{type: [String],  	default: [] },
+	comments: 		{type: [],			default: [] }}, 
 	{ versionKey: false }
 );
 
@@ -64,6 +65,18 @@ module.exports = {
 		Event.find({ users: { "$in" : [userId]} }, function(err, doc){
 			if(err)
 				return callback("error");
+			return callback(doc);
+		});
+	},
+	addCommentById: function(p_id, p_userId, p_comment, callback) {
+		Event.update(
+			{_id : mongoose.Types.ObjectId(p_id)},
+			{ $push: {comments : {_id: mongoose.Types.ObjectId(), text: p_comment, userId: p_userId}}},
+			function(err, doc) {
+				
+			if (err) 
+				return callback("error");
+
 			return callback(doc);
 		});
 	}

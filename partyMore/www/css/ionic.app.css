@@ -10176,3 +10176,15 @@ input[type="color"] {
 
 .contact-list .item-avatar .icon-view.ion-more {
   color: #CCC; }
+
+.item-stacked-label > div {
+  padding-right: 8px; }
+
+.comment {
+  margin-bottom: 15px; }
+  .comment p {
+    margin: 0; }
+    .comment p.author {
+      font-weight: bold; }
+    .comment p.citation {
+      font-style: italic; }
