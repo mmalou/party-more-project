@@ -33,6 +33,20 @@ angular.module('starter', ['ionic',
 		  	// org.apache.cordova.statusbar required
 		  	StatusBar.styleDefault();
 		}
+		
+		if(window.Connection) {
+		   if(navigator.connection.type == Connection.NONE) {
+		    $ionicPopup.confirm({
+		     title: "Internet Disconnected",
+		     content: "The internet is disconnected on your device."
+		    })
+		    .then(function(result) {
+		     if(!result) {
+		      ionic.Platform.exitApp();
+		     }
+		    });
+		   }
+		}
 
 		$rootScope.$on("loading:show",function(){
 	      $ionicLoading.show({
@@ -61,7 +75,7 @@ angular.module('starter', ['ionic',
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider) {
 
-	  $httpProvider.interceptors.push(['$q', '$rootScope', function($q, $rootScope) {
+	  /*$httpProvider.interceptors.push(['$q', '$rootScope', function($q, $rootScope) {
 	    return {
 	        'request': function (config) {
 
@@ -76,7 +90,7 @@ angular.module('starter', ['ionic',
 	          return response;
 	        }
 	    };
-	  }]);
+	  }]);*/
 	$ionicConfigProvider.navBar.alignTitle('center');
   	$stateProvider
 
