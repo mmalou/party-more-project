@@ -73,13 +73,14 @@ router.route('/')
 
 		var name 		= req.body.name;
 		var category 	= req.body.category;
+		var image 		= req.body.image;
 		var creator 	= req.body.creator;
 		var date 		= req.body.date;
 		var description = req.body.description;
 		var location 	= req.body.location;
 		var status 		= req.body.status;
 
-		model.event.add(name, category, creator, date, description, location, status, function(resultAdd){
+		model.event.add(name, category, image, creator, date, description, location, status, function(resultAdd){
 			if (resultAdd == "error") {
 				res.statusCode = 500;
 				res.send();

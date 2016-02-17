@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers',
+angular.module('starter', ['ionic',
 	'MenuController',
 	'SignupController',
 	'SignupService',
@@ -81,22 +81,21 @@ angular.module('starter', ['ionic', 'starter.controllers',
 
   	.state('login', {
 	    url: '/login',
-	    templateUrl: 'templates/login.html',
+	    templateUrl: 'templates/login/login.html',
 	    controller: 'LoginCtrl'
 	})
 
   	.state('app', {
 		url: "/app",
 		abstract: true,
-		templateUrl: "templates/menu.html",
-		controller: 'AppCtrl'
+		templateUrl: "templates/menu/menu.html"
   	})
 
   	.state('app.events', {
 		url: "/events",
 		views: {
 			'menuContent': {
-				templateUrl: "templates/news-feed.html",
+				templateUrl: "templates/event/events.html",
 				controller: 'EventsCtrl'
 	  		}
 		}
@@ -107,7 +106,7 @@ angular.module('starter', ['ionic', 'starter.controllers',
 	    views: {
 	  		'menuContent': {
 				controller: 'EventCtrl',
-	    		templateUrl: 'templates/event.html',
+	    		templateUrl: 'templates/event/event.html',
 	    		resolve: {
 		        	event: function($stateParams, EventsSrv) {
 		          		return EventsSrv.getEvent($stateParams.id);
@@ -121,24 +120,17 @@ angular.module('starter', ['ionic', 'starter.controllers',
 		url: "/profile",
 		views: {
 	  		'menuContent': {
-				templateUrl: "templates/profile.html",
+				templateUrl: "templates/profile/profile.html",
 				controller: "ProfileCtrl"
 	  		}
 		}
   	})
-	.state('app.followers', {
-		url: "/followers",
-	  	views: {
-			'menuContent': {
-		 		templateUrl: "templates/followers.html"
-			}
-	  	}
-	})
+
 	.state('app.contacts', {
 		url: "/contacts",
 	  	views: {
 			'menuContent': {
-		 		templateUrl: "templates/listUsers.html",
+		 		templateUrl: "templates/contact/contacts.html",
 		 		controller: 'ContactCtrl'
 			}
 	  	}

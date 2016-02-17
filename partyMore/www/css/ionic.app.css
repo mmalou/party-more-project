@@ -10188,3 +10188,16 @@ input[type="color"] {
       font-weight: bold; }
     .comment p.citation {
       font-style: italic; }
+
+.img-responsive .item-content {
+  padding: 0; }
+  .img-responsive .item-content img {
+    max-width: 100%;
+    height: 11vh;
+    display: block; }
+
+.img-responsive .item-radio .radio-icon {
+  top: 25%;
+  right: 38%;
+  padding: 0;
+  color: #FFF; }

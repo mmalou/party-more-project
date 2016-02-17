@@ -10,7 +10,7 @@ angular.module('ContactController', [])
   };
 
 	//ADD CONTACT
-  $ionicModal.fromTemplateUrl('templates/contactAdd.html', {
+  $ionicModal.fromTemplateUrl('templates/contact.add.html', {
       scope: $scope
   }).then(function(modal) {
     $scope.modalContactAdd = modal;
@@ -88,13 +88,4 @@ angular.module('ContactController', [])
       });
     });
   };
-})
-
-.controller('AddcontactCtrl', function($scope, ContactSrv, $localStorage) {
-
-
-	/*ContactSrv.getContacts($localStorage.user.id).success(function(data){
-		console.log(data.contacts);
-	});*/
-	
 });

@@ -1,0 +1,58 @@
+<ion-view view-title="{{event.name}}">
+	<ion-content>
+		<div class="list card">
+
+		  <div class="item item-avatar">
+		    <img src="img/27.jpg">
+		    <h2>{{event.creator}}</h2>
+		    <p>
+		    	<i class="icon ion-ios-clock-outline"></i>
+		    	{{event.date*1000 | date:"MM/dd/yyyy 'at' h:mma"}}
+		    </p>
+		  </div>
+
+		  <div class="item item-body">
+		    <img class="full-image" src="img/feed/{{event.image}}.jpg">
+		    <p>
+		    	<i class="icon ion-ios-location"></i>
+		    	{{event.location}}
+		    </p>
+		    <h2>Description</h2>
+		    <p>
+		      {{event.description}}
+		    </p>
+		    <hr>
+		    <h2>Participants</h2>
+		    <div class='comment'>
+		    	<ul ng-show='event.users.length'>
+		    		<li ng-repeat='user in event.users'><i class="icon ion-arrow-right-b"></i> {{user}}</li>
+		    	</ul>
+		    	<p ng-hide='event.users.length'>No participants</p>
+		    </div>
+		    <hr>
+		    <h2>Comments</h2>
+		    <div class='comment' ng-repeat='comment in event.comments'>
+		    	<p class='author'>{{comment.userId.username}}</p>
+		    	<p class='citation'>{{comment.text}}</p>	
+		    </div>
+		    <hr>
+		    <h2>Your comment</h2>
+		    <form name="signupForm" ng-submit="doAddComment()">
+		      <div class="list list-insert">
+				<label class="item item-input item-stacked-label">
+					<input name="comment" type="text" placeholder="Comment" ng-model="formData.comment">
+				</label>
+		        <label class="item">
+		          <button class="button button-block button-positive" type="submit">Send</button>
+		        </label>		
+		      </div>
+		    </form>
+		  </div>
+
+		</div>
+	</ion-content>
+	<ion-footer-bar align-title="center" class="bar-assertive" ng-click='addUserToEvent()'>
+  		<span ng-hide='participate'><h1 class="title">I'm in !</h1></span>
+  		<span ng-show='participate'><h1 class="title"><i class='icon ion-checkmark'></i></h1></span>
+	</ion-footer-bar>
+</ion-view>

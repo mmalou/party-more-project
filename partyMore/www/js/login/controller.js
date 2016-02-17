@@ -1,8 +1,8 @@
 angular.module('LoginController', [])
-.controller('LoginCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, $state, SignupSrv, LoginSrv) {
+.controller('LoginCtrl', function($scope, $localStorage, $ionicModal, $ionicPopup, $state, $rootScope, SignupSrv, LoginSrv) {
 	
 	$scope.loginData = {
-		username : "julien",
+		username : "Julien",
 		password : "azerty"
 	};
 
@@ -25,6 +25,7 @@ angular.module('LoginController', [])
 				$localStorage.user = data;
 				$state.go('app.events');
 			}).error(function(data){
+				$rootScope.$broadcast("loading:hide");
 				var alertPopup = $ionicPopup.alert({
 			     	title: 'Error !',
 			     	template: data.message,
@@ -41,7 +42,7 @@ angular.module('LoginController', [])
 
 	//SIGNUP
 
-	$ionicModal.fromTemplateUrl('templates/signup.html', {
+	$ionicModal.fromTemplateUrl('templates/login/signup.html', {
 	    scope: $scope
 	}).then(function(modal) {
 		$scope.modal = modal;
@@ -131,6 +132,7 @@ angular.module('LoginController', [])
 			   	});
 
 			}).error(function(data){
+				$rootScope.$broadcast("loading:hide");
 				$scope.inscriptionData.passwordVerification = $scope.inscriptionData.password;
 				var alertPopup = $ionicPopup.alert({
 			     	title: 'Error !',

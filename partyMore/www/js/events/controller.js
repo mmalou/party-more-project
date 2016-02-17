@@ -26,7 +26,7 @@ angular.module('EventsController', [])
 
 
 	//ADD EVENT
-	  $ionicModal.fromTemplateUrl('templates/eventAdd.html', {
+	  $ionicModal.fromTemplateUrl('templates/event/event.add.html', {
 	      scope: $scope
 	  }).then(function(modal) {
 	    $scope.modalEventAdd = modal;
@@ -83,6 +83,7 @@ angular.module('EventsController', [])
 	    name : "",
 	    description : "",
 	    category : "",
+	    image: "",
 	    date : "",
 	    hour : "",
 	    location: "",
@@ -98,6 +99,7 @@ angular.module('EventsController', [])
 	      name : "",
 	      description : "",
 	      category : "",
+	      image: "",
 	      date : "",
 	      hour : "",
 	      location: "",
@@ -144,7 +146,6 @@ angular.module('EventsController', [])
 
 .controller('EventCtrl', function(event, $scope, $localStorage, $ionicModal, $ionicPopup, EventsSrv) {
 	$scope.event = event;
-	console.log(event);
 
 	$scope.participate = ($scope.event.users.indexOf($localStorage.user.username) == -1) ? false : true;
 

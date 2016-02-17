@@ -10,6 +10,7 @@ var schema_event = Schema({
 	date: 			{type: Number, 		default: null},
 	description: 	{type: String, 		default: null},
 	location: 		{type: String, 		default: null},
+	image: 			{type: String, 		default: null},
 	status: 		{type: String, 		default: "private"},
 	users: 			{type: [],  		default: [] },
 	comments: 		{type: [],			default: [] }}, 
@@ -19,8 +20,8 @@ var schema_event = Schema({
 var Event = mongoose.model('event', schema_event, 'event');
 
 module.exports = {
-	add: function(p_name, p_category, p_creator, p_date, p_description, p_location, p_status, callback) {
-		var newEvent = new Event({ name : p_name, category : p_category, creator : p_creator, date : p_date, description : p_description, location : p_location, status : p_status});
+	add: function(p_name, p_category, p_image, p_creator, p_date, p_description, p_location, p_status, callback) {
+		var newEvent = new Event({ name : p_name, category : p_category, image : p_image, creator : p_creator, date : p_date, description : p_description, location : p_location, status : p_status});
 		newEvent.save(function (err,doc) {
 			if (err) 
 				return callback("error");
