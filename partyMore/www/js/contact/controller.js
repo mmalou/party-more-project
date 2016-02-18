@@ -10,7 +10,7 @@ angular.module('ContactController', [])
   };
 
 	//ADD CONTACT
-  $ionicModal.fromTemplateUrl('templates/contact.add.html', {
+  $ionicModal.fromTemplateUrl('templates/contact/contact.add.html', {
       scope: $scope
   }).then(function(modal) {
     $scope.modalContactAdd = modal;
